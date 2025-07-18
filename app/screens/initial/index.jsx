@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { MaterialCommunityIcons, FontAwesome5, Entypo } from '@expo/vector-icons';
+import Icon from 'react-native-vector-icons/Feather';
 import styles from './styles';
 import HeartPulse from '../heart-pulse';
 
@@ -36,7 +37,10 @@ export default function Initial({ navigation }) {
       </View>
 
       <Text style={styles.footer}>Gerenciar e Melhorar o Seu Bem-Estar</Text>
-     
+      <TouchableOpacity style={styles.homeButton} onPress={() => navigation.navigate('Home')}>
+        <Icon name="log-in" size={28} color="#0077b6" />
+        <Text style={styles.homeText}>Voltar</Text>
+      </TouchableOpacity>
 
     </View>
   );

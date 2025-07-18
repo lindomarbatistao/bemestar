@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
+import axios from 'axios';
 import styles from './styles';
 
 export default function SignUp({ navigation }) {
@@ -7,10 +8,27 @@ export default function SignUp({ navigation }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleLogin = () => {
-    console.log('Login:', { username, email, password });
-    navigation.navigate('Home');
+
+  const handleSignUp = () => {
+    
+    axios.post('http://192.168.15.6:8000/api/signup/', {
+      username: username,
+      password: password,
+      email: email
+    })
+    .then(response => {
+      Alert.alert("Sucesso", "Usuário criado com sucesso!");
+      console.log("Sucesso", "Usuário criado com sucesso!");
+      navigation.navigate('Home');
+    })
+    .catch(error => {
+      console.log(error);
+      Alert.alert("Erro", "Falha ao criar usuário. Verifique os dados.");
+      console.log(error.response.data);
+      console.log("Erro", "Falha ao criar usuário. Verifique os dados.");
+    });
   };
+
 
   return (
     <View style={styles.container}>
@@ -40,7 +58,7 @@ export default function SignUp({ navigation }) {
         onChangeText={setPassword}
       />
 
-      <TouchableOpacity style={styles.button} onPress={handleLogin}>
+      <TouchableOpacity style={styles.button} onPress={handleSignUp}>
         <Text style={styles.buttonText}>Cadastrar</Text>
       </TouchableOpacity>
     </View>

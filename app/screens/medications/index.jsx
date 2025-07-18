@@ -5,7 +5,11 @@ import Icon from 'react-native-vector-icons/Feather';
 
 export default function Medications({ navigation }) {
   const [date, setDate] = useState('');
-  const [time, setTime] = useState('');
+  const [time1, setTime1] = useState('');
+  const [time2, setTime2] = useState('');
+  const [time3, setTime3] = useState('');
+  const [time4, setTime4] = useState('');
+  const [time5, setTime5] = useState('');
   const [nameMedic, setNameMedic] = useState('');
 
   const [daysOfWeek, setDaysOfWeek] = useState([
@@ -83,13 +87,10 @@ export default function Medications({ navigation }) {
       return Alert.alert('Erro', 'Data inválida. Use o formato dd/mm/aaaa.');
     }
 
-    if (!isValidTime(time)) {
+    if (!isValidTime(time1)) {
       return Alert.alert('Erro', 'Hora inválida. Use o formato hh:mm.');
     }
 
-    console.log('Data:', date);
-    console.log('Hora:', time);
-    console.log('nameMedic:', nameMedic);
 
     Alert.alert('Sucesso', 'Dados registrados com sucesso!');
   };
@@ -99,37 +100,15 @@ export default function Medications({ navigation }) {
 
       <Text style={styles.title}>Medicamento</Text>
 
-      <TextInput
-        style={styles.input}
-        placeholder="Data (ex: 16/07/2025)"
-        keyboardType="numeric"
-        value={date}
-        onChangeText={handleDateChange}
-        maxLength={10}
-      />
 
       <TextInput
-        style={styles.input}
-        placeholder="Hora (ex: 14:30)"
-        keyboardType="numeric"
-        value={time}
-        onChangeText={handleTimeChange}
-        maxLength={5}
-      />
-
-      <TextInput
-        style={styles.input}
+        style={styles.input1}
         placeholder="Nome do medicamento"
         value={nameMedic}
         onChangeText={setNameMedic}
       />
 
-
-
-      <TouchableOpacity style={styles.button} onPress={handleRegister}>
-        <Text style={styles.buttonText}>Registrar</Text>
-      </TouchableOpacity>
-
+      <Text style={styles.footer}>Dias da semana</Text>
       <View style={styles.daysContainer}>
         {daysOfWeek.map((item, index) => (
           <TouchableOpacity
@@ -149,8 +128,56 @@ export default function Medications({ navigation }) {
           </TouchableOpacity>
         ))}
       </View>
+      <Text style={styles.footer}>Horários</Text>
+      
+      <TextInput
+        style={styles.input2}
+        placeholder="1º Remédio (ex: 6:30)"
+        keyboardType="numeric"
+        value={time1}
+        onChangeText={handleTimeChange}
+        maxLength={5}
+      />
 
+      <TextInput
+        style={styles.input2}
+        placeholder="2º Remédio (ex: 10:30)"
+        keyboardType="numeric"
+        value={time2}
+        onChangeText={handleTimeChange}
+        maxLength={5}
+      />
 
+      <TextInput
+        style={styles.input2}
+        placeholder="3º Remédio (ex: 14:30)"
+        keyboardType="numeric"
+        value={time3}
+        onChangeText={handleTimeChange}
+        maxLength={5}
+      />
+
+      <TextInput
+        style={styles.input2}
+        placeholder="4º Remédio (ex: 18:30)"
+        keyboardType="numeric"
+        value={time4}
+        onChangeText={handleTimeChange}
+        maxLength={5}
+      />
+
+      <TextInput
+        style={styles.input2}
+        placeholder="5º Remédio (ex: 22:30)"
+        keyboardType="numeric"
+        value={time5}
+        onChangeText={handleTimeChange}
+        maxLength={5}
+      />
+
+      <TouchableOpacity style={styles.button} onPress={handleRegister}>
+        <Text style={styles.buttonText}>Registrar</Text>
+      </TouchableOpacity>
 
       <Text style={styles.footer}>Gerenciar e Melhorar o Seu Bem-Estar</Text>
 

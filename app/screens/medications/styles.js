@@ -16,11 +16,27 @@ export default StyleSheet.create({
     marginTop: 100,
     marginBottom: 20,
   },
-  input: {
+  input1: {
     width: '100%',
     paddingVertical: 12,
-    paddingHorizontal: 16,
-    marginVertical: 10,
+    paddingHorizontal: 15,
+    marginVertical: 5,
+    backgroundColor: '#ffffff',
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: '#d0d7de',
+    fontSize: 16,
+    elevation: 2, // sombra leve para Android
+    shadowColor: '#000', // sombra iOS
+    shadowOpacity: 0.05,
+    shadowOffset: { width: 0, height: 1 },
+    shadowRadius: 4,
+  },
+  input2: {
+    width: '70%',
+    paddingVertical: 12,
+    paddingHorizontal: 15,
+    marginVertical: 5,
     backgroundColor: '#ffffff',
     borderRadius: 12,
     borderWidth: 1,
@@ -65,7 +81,7 @@ export default StyleSheet.create({
     fontStyle: 'italic',
   },
   footer: {
-    marginTop: 30,
+    marginTop: 20,
     fontSize: 15,
     color: '#444',
     textAlign: 'center',
@@ -89,8 +105,8 @@ export default StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
-    marginVertical: 25,
-    gap: 4,
+    marginVertical: 10,
+    gap: 2,
   },
 
   dayBox: {
