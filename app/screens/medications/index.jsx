@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
 import styles from './styles';
 import Icon from 'react-native-vector-icons/Feather';
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Medications({ navigation }) {
   const [date, setDate] = useState('');
@@ -27,6 +29,44 @@ export default function Medications({ navigation }) {
     updated[index].selected = !updated[index].selected;
     setDaysOfWeek(updated);
   };
+
+ const handleRegister = async () => {
+  try {
+    const token = await AsyncStorage.getItem('token');
+    console.log('Token', token);
+
+    const payload = {
+      nome: nameMedic,
+      dom: daysOfWeek[0].selected,
+      seg: daysOfWeek[1].selected,
+      ter: daysOfWeek[2].selected,
+      qua: daysOfWeek[3].selected,
+      qui: daysOfWeek[4].selected,
+      sex: daysOfWeek[5].selected,
+      sab: daysOfWeek[6].selected,
+      hora1: time1 || null,
+      hora2: time2 || null,
+      hora3: time3 || null,
+      hora4: time4 || null,
+      hora5: time5 || null
+    };
+
+    console.log(payload.nome, payload.dom, payload.seg, payload.hora1, payload.hora2);
+
+    const response = await axios.post('http://192.168.15.6:8000/api/calendario/', payload, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    Alert.alert('Sucesso', 'Dados registrados com sucesso!');
+    console.log(response.data);
+
+  } catch (error) {
+    console.log('Erro ao registrar:', error.response?.data || error.message);
+    Alert.alert('Erro', 'Falha ao registrar. Verifique os dados ou o login.');
+  }
+};
 
 
 
@@ -55,7 +95,7 @@ export default function Medications({ navigation }) {
     }
 
     if (formatted.length <= 5) {
-      setTime(formatted);
+      setTime1(formatted);
     }
   };
 
@@ -82,18 +122,6 @@ export default function Medications({ navigation }) {
     return h >= 0 && h <= 23 && m >= 0 && m <= 59;
   };
 
-  const handleRegister = () => {
-    if (!isValidDate(date)) {
-      return Alert.alert('Erro', 'Data inválida. Use o formato dd/mm/aaaa.');
-    }
-
-    if (!isValidTime(time1)) {
-      return Alert.alert('Erro', 'Hora inválida. Use o formato hh:mm.');
-    }
-
-
-    Alert.alert('Sucesso', 'Dados registrados com sucesso!');
-  };
 
   return (
     <View style={styles.container}>
@@ -129,7 +157,7 @@ export default function Medications({ navigation }) {
         ))}
       </View>
       <Text style={styles.footer}>Horários</Text>
-      
+
       <TextInput
         style={styles.input2}
         placeholder="1º Remédio (ex: 6:30)"

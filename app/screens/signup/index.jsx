@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import styles from './styles';
 
@@ -10,7 +11,8 @@ export default function SignUp({ navigation }) {
 
 
   const handleSignUp = () => {
-    
+    console.log(username, password, email);
+        
     axios.post('http://192.168.15.6:8000/api/signup/', {
       username: username,
       password: password,
@@ -18,7 +20,7 @@ export default function SignUp({ navigation }) {
     })
     .then(response => {
       Alert.alert("Sucesso", "Usuário criado com sucesso!");
-      console.log("Sucesso", "Usuário criado com sucesso!");
+      AsyncStorage.setItem('token', response.data.access); // salva token
       navigation.navigate('Home');
     })
     .catch(error => {

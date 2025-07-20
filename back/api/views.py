@@ -16,22 +16,12 @@ from .serializers import (
 from rest_framework.permissions import IsAuthenticated
 
 class SignupView(APIView):
-    permission_classes = [AllowAny]  # Permite acesso sem autenticação
-
     def post(self, request):
-        username = request.data.get("username")
-        email = request.data.get("email")
-        password = request.data.get("password")
-
-        if not username or not email or not password:
-            return Response({"error": "Todos os campos são obrigatórios."}, status=status.HTTP_400_BAD_REQUEST)
-
-        if User.objects.filter(username=username).exists():
-            return Response({"error": "Usuário já existe."}, status=status.HTTP_400_BAD_REQUEST)
-
-        user = User.objects.create_user(username=username, email=email, password=password)
-        return Response({"message": "Usuário criado com sucesso."}, status=status.HTTP_201_CREATED)
-
+        serializer = UserSignupSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"message": "Usuário criado com sucesso"}, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class PressaoListCreateView(ListCreateAPIView):
     queryset = PressaoArterial.objects.all()
@@ -67,6 +57,10 @@ class CalendarioListCreateView(ListCreateAPIView):
     queryset = Calendario.objects.all()
     serializer_class = CalendarioSerializer
     permission_classes = [IsAuthenticated]
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
 
 class CalendarioDetailView(RetrieveUpdateDestroyAPIView):
     queryset = Calendario.objects.all()

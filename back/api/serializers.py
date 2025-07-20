@@ -10,12 +10,11 @@ class UserSignupSerializer(serializers.ModelSerializer):
         fields = ['username', 'email', 'password']
 
     def create(self, validated_data):
-        user = User.objects.create_user(
+        return User.objects.create_user(
             username=validated_data['username'],
-            email=validated_data.get('email'),
+            email=validated_data['email'],
             password=validated_data['password']
         )
-        return user
 
 
 class PressaoArterialSerializer(serializers.ModelSerializer):
@@ -44,8 +43,4 @@ class CalendarioSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Calendario
-        fields = [
-            'id', 'user', 'nome',
-            'dom', 'seg', 'ter', 'qua', 'qui', 'sex', 'sab',
-            'hora1', 'hora2', 'hora3', 'hora4', 'hora5'
-        ]
+        fields = '__all__'

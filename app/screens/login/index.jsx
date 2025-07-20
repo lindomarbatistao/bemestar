@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
 import styles from './styles';
 
 export default function Login({ navigation }) {
@@ -7,9 +9,28 @@ export default function Login({ navigation }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleLogin = () => {
-    console.log('Login:', { username, email, password });
-    navigation.navigate('Initial');
+  const handleLogin = async () => {
+    try {
+      const response = await axios.post('http://192.168.15.6:8000/api/token/', {
+        username: username,
+        password: password,
+      });
+
+      if (response.status === 200) {
+        const data = response.data;
+        await AsyncStorage.setItem('token', data.access);
+        console.log('Token armazenado:', data.access);
+        navigation.navigate('Initial');
+      }
+    } catch (error) {
+      if (error.response) {
+        console.log('Erro ao fazer login:', error.response.data);
+        alert('Usuário ou senha inválidos.');
+      } else {
+        console.error('Erro de rede:', error.message);
+        alert('Erro ao conectar com o servidor.');
+      }
+    }
   };
 
   return (
