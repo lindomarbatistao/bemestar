@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react'; // ALTERADO: adicionado useEffect
 import { View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
 import styles from './styles';
 import Icon from 'react-native-vector-icons/Feather';
@@ -6,6 +6,7 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Medications({ navigation }) {
+  const [calendarId, setCalendarId] = useState(null); // ALTERADO: controle do ID para PUT
   const [date, setDate] = useState('');
   const [time1, setTime1] = useState('');
   const [time2, setTime2] = useState('');
@@ -30,45 +31,86 @@ export default function Medications({ navigation }) {
     setDaysOfWeek(updated);
   };
 
- const handleRegister = async () => {
-  try {
-    const token = await AsyncStorage.getItem('token');
-    console.log('Token', token);
+  // ALTERADO: Novo useEffect para buscar dados existentes
+  useEffect(() => {
+    const fetchCalendario = async () => {
+      try {
+        const token = await AsyncStorage.getItem('token');
+        const response = await axios.get('http://192.168.15.6:8000/api/calendario/', {
+          headers: { Authorization: `Bearer ${token}` },
+        });
 
-    const payload = {
-      nome: nameMedic,
-      dom: daysOfWeek[0].selected,
-      seg: daysOfWeek[1].selected,
-      ter: daysOfWeek[2].selected,
-      qua: daysOfWeek[3].selected,
-      qui: daysOfWeek[4].selected,
-      sex: daysOfWeek[5].selected,
-      sab: daysOfWeek[6].selected,
-      hora1: time1 || null,
-      hora2: time2 || null,
-      hora3: time3 || null,
-      hora4: time4 || null,
-      hora5: time5 || null
+        if (response.data.length > 0) {
+          const calendar = response.data[0]; // Considera o primeiro registro
+          setCalendarId(calendar.id);
+          setNameMedic(calendar.nome);
+          setTime1(calendar.hora1 || '');
+          setTime2(calendar.hora2 || '');
+          setTime3(calendar.hora3 || '');
+          setTime4(calendar.hora4 || '');
+          setTime5(calendar.hora5 || '');
+          setDaysOfWeek([
+            { day: 'Dom', selected: calendar.dom },
+            { day: 'Seg', selected: calendar.seg },
+            { day: 'Ter', selected: calendar.ter },
+            { day: 'Qua', selected: calendar.qua },
+            { day: 'Qui', selected: calendar.qui },
+            { day: 'Sex', selected: calendar.sex },
+            { day: 'Sáb', selected: calendar.sab },
+          ]);
+        }
+      } catch (error) {
+        console.log('Erro ao buscar calendário:', error.response?.data || error.message);
+      }
     };
 
-    console.log(payload.nome, payload.dom, payload.seg, payload.hora1, payload.hora2);
+    fetchCalendario();
+  }, []);
 
-    const response = await axios.post('http://192.168.15.6:8000/api/calendario/', payload, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+  const handleRegister = async () => {
+    try {
+      const token = await AsyncStorage.getItem('token');
 
-    Alert.alert('Sucesso', 'Dados registrados com sucesso!');
-    console.log(response.data);
+      const payload = {
+        nome: nameMedic,
+        dom: daysOfWeek[0].selected,
+        seg: daysOfWeek[1].selected,
+        ter: daysOfWeek[2].selected,
+        qua: daysOfWeek[3].selected,
+        qui: daysOfWeek[4].selected,
+        sex: daysOfWeek[5].selected,
+        sab: daysOfWeek[6].selected,
+        hora1: time1 || null,
+        hora2: time2 || null,
+        hora3: time3 || null,
+        hora4: time4 || null,
+        hora5: time5 || null,
+      };
 
-  } catch (error) {
-    console.log('Erro ao registrar:', error.response?.data || error.message);
-    Alert.alert('Erro', 'Falha ao registrar. Verifique os dados ou o login.');
-  }
-};
+      let response;
+      if (calendarId) {
+        // ALTERADO: Se existir ID, usa PUT
+        response = await axios.put(
+          `http://192.168.15.6:8000/api/calendario/${calendarId}/`,
+          payload,
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+        Alert.alert('Sucesso', 'Dados atualizados com sucesso!');
+      } else {
+        // ALTERADO: Caso contrário, usa POST
+        response = await axios.post('http://192.168.15.6:8000/api/calendario/', payload, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setCalendarId(response.data.id); // Guarda o novo ID para futuros PUTs
+        Alert.alert('Sucesso', 'Dados registrados com sucesso!');
+      }
 
-
+      console.log(response.data);
+    } catch (error) {
+      console.log('Erro ao registrar:', error.response?.data || error.message);
+      Alert.alert('Erro', 'Falha ao registrar/atualizar. Verifique os dados ou o login.');
+    }
+  };
 
   const handleDateChange = (text) => {
     const cleaned = text.replace(/\D/g, '');
@@ -122,12 +164,9 @@ export default function Medications({ navigation }) {
     return h >= 0 && h <= 23 && m >= 0 && m <= 59;
   };
 
-
   return (
     <View style={styles.container}>
-
       <Text style={styles.title}>Medicamento</Text>
-
 
       <TextInput
         style={styles.input1}
@@ -204,7 +243,7 @@ export default function Medications({ navigation }) {
       />
 
       <TouchableOpacity style={styles.button} onPress={handleRegister}>
-        <Text style={styles.buttonText}>Registrar</Text>
+        <Text style={styles.buttonText}>{calendarId ? 'Atualizar' : 'Registrar'}</Text> {/* ALTERADO: texto do botão */}
       </TouchableOpacity>
 
       <Text style={styles.footer}>Gerenciar e Melhorar o Seu Bem-Estar</Text>
@@ -213,7 +252,6 @@ export default function Medications({ navigation }) {
         <Icon name="home" size={28} color="#0077b6" />
         <Text style={styles.homeText}>Voltar à Tela Inicial</Text>
       </TouchableOpacity>
-
     </View>
   );
 }

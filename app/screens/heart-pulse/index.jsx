@@ -4,7 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import styles from './styles';
 import Icon from 'react-native-vector-icons/Feather'; 
 
-export default function BloodGlucose({ navigation }) {
+export default function HeartPulse({ navigation }) {
   const [date, setDate] = useState('');
   const [time, setTime] = useState('');
   const [pressure, setPressure] = useState('');
