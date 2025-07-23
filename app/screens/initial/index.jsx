@@ -9,6 +9,17 @@ import HeartPulse from '../heart-pulse';
 
 
 export default function Initial({ navigation }) {
+
+  const logout = async () => {
+    try {
+      await AsyncStorage.removeItem('token');
+      navigation.navigate('Home');
+    } catch (error) {
+      console.error('Erro ao remover o token:', error);
+    }
+  };
+
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Monitor de Saúde</Text>
@@ -38,7 +49,7 @@ export default function Initial({ navigation }) {
       </View>
 
       <Text style={styles.footer}>Gerenciar e Melhorar o Seu Bem-Estar</Text>
-      <TouchableOpacity style={styles.homeButton} onPress={() => navigation.navigate('Home')}>
+      <TouchableOpacity style={styles.homeButton} onPress={logout}>
         <Icon name="log-in" size={28} color="#0077b6" />
         <Text style={styles.homeText}>Voltar</Text>
       </TouchableOpacity>

@@ -23,43 +23,88 @@ class SignupView(APIView):
             return Response({"message": "Usuário criado com sucesso"}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+############################################################################
 class PressaoListCreateView(ListCreateAPIView):
     queryset = PressaoArterial.objects.all()
     serializer_class = PressaoArterialSerializer
     permission_classes = [IsAuthenticated]
+            
+    def get_queryset(self):
+        return PressaoArterial.objects.filter(user=self.request.user)
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
 
 class PressaoDetailView(RetrieveUpdateDestroyAPIView):
     queryset = PressaoArterial.objects.all()
     serializer_class = PressaoArterialSerializer
     permission_classes = [IsAuthenticated]
+        
+    def get_queryset(self):
+        return PressaoArterial.objects.filter(user=self.request.user)
 
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+############################################################################
 class GlicemiaListCreateView(ListCreateAPIView):
     queryset = Glicemia.objects.all()
     serializer_class = GlicemiaSerializer
     permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return Glicemia.objects.filter(user=self.request.user)
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
 
 class GlicemiaDetailView(RetrieveUpdateDestroyAPIView):
     queryset = Glicemia.objects.all()
     serializer_class = GlicemiaSerializer
     permission_classes = [IsAuthenticated]
 
+    def get_queryset(self):
+        return Glicemia.objects.filter(user=self.request.user)
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+
+############################################################################
 class ColesterolListCreateView(ListCreateAPIView):
     queryset = Colesterol.objects.all()
     serializer_class = ColesterolSerializer
     permission_classes = [IsAuthenticated]
 
+    def get_queryset(self):
+        return Colesterol.objects.filter(user=self.request.user)
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
 class ColesterolDetailView(RetrieveUpdateDestroyAPIView):
     queryset = Colesterol.objects.all()
     serializer_class = ColesterolSerializer
     permission_classes = [IsAuthenticated]
-
-class CalendarioListCreateView(ListCreateAPIView):
-    queryset = Calendario.objects.all()
-    serializer_class = CalendarioSerializer
-    permission_classes = [IsAuthenticated]
+        
+    def get_queryset(self):
+        return Colesterol.objects.filter(user=self.request.user)
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+
+############################################################################
+class CalendarioListCreateView(ListCreateAPIView):
+    serializer_class = CalendarioSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return Calendario.objects.filter(user=self.request.user)
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
 
 
 class CalendarioDetailView(RetrieveUpdateDestroyAPIView):
@@ -67,3 +112,10 @@ class CalendarioDetailView(RetrieveUpdateDestroyAPIView):
     serializer_class = CalendarioSerializer
     permission_classes = [IsAuthenticated]
 
+    def get_queryset(self):
+        return Calendario.objects.filter(user=self.request.user)
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+############################################################################

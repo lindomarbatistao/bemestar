@@ -3,11 +3,13 @@ import { View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import styles from './styles';
 import Icon from 'react-native-vector-icons/Feather';
+import axios from 'axios';
 
-export default function BloodGlucose({ navigation }) {
+
+export default function Bloodglic({ navigation }) {
   const [date, setDate] = useState('');
   const [time, setTime] = useState('');
-  const [glucose, setGlucose] = useState('');
+  const [glic, setiGlic] = useState('');
 
   const handleDateChange = (text) => {
     const cleaned = text.replace(/\D/g, '');
@@ -61,20 +63,51 @@ export default function BloodGlucose({ navigation }) {
     return h >= 0 && h <= 23 && m >= 0 && m <= 59;
   };
 
-  const handleRegister = () => {
-    if (!isValidDate(date)) {
-      return Alert.alert('Erro', 'Data inválida. Use o formato dd/mm/aaaa.');
-    }
+  const handleRegister = async () => {
+  if (!isValidDate(date)) {
+    return Alert.alert('Erro', 'Data inválida. Use o formato dd/mm/aaaa.');
+  }
 
-    if (!isValidTime(time)) {
-      return Alert.alert('Erro', 'Hora inválida. Use o formato hh:mm.');
-    }
+  if (!isValidTime(time)) {
+    return Alert.alert('Erro', 'Hora inválida. Use o formato hh:mm.');
+  }
 
-    console.log('Data:', date);
-    console.log('Hora:', time);
-    console.log('Glicemia:', glucose);
-    Alert.alert('Sucesso', 'Dados registrados com sucesso!');
-  };
+  const glicValue = parseInt(glic);
+  if (isNaN(glicValue)) {
+    return Alert.alert('Erro', 'Informe um valor de glicemia válido.');
+  }
+
+  try {
+    const token = await AsyncStorage.getItem('token');
+
+    const [dd, mm, yyyy] = date.split('/');
+    const dataFormatada = `${yyyy}-${mm}-${dd}`; // formato ISO
+
+    const payload = {
+      glic: glicValue,
+      data: dataFormatada,
+      hora: time,
+    };
+
+    console.log('Payload enviado:', payload); // útil para debug
+
+    await axios.post('http://192.168.15.6:8000/api/glicemia/', payload, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    Alert.alert('Sucesso', 'Glicemia registrada com sucesso!');
+    setDate('');
+    setTime('');
+    setiGlic('');
+  } catch (error) {
+    console.error('Erro ao registrar glicemia:', error.response?.data || error.message);
+    Alert.alert('Erro', 'Não foi possível registrar. Verifique os dados ou tente novamente.');
+  }
+};
+
+
 
   return (
     <View style={styles.container}>
@@ -102,8 +135,8 @@ export default function BloodGlucose({ navigation }) {
       <TextInput
         style={styles.input}
         placeholder="Glicemia (ex: 85)"
-        value={glucose}
-        onChangeText={setGlucose}
+        value={glic}
+        onChangeText={setiGlic}
       />
 
       <TouchableOpacity style={styles.button} onPress={handleRegister}>

@@ -4,6 +4,8 @@ import styles from './styles';
 import Icon from 'react-native-vector-icons/Feather';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useFocusEffect } from '@react-navigation/native';
+import { useCallback } from 'react';
 
 export default function Medications({ navigation }) {
   const [calendarId, setCalendarId] = useState(null); // ALTERADO: controle do ID para PUT
@@ -14,6 +16,33 @@ export default function Medications({ navigation }) {
   const [time4, setTime4] = useState('');
   const [time5, setTime5] = useState('');
   const [nameMedic, setNameMedic] = useState('');
+
+  useFocusEffect(
+  useCallback(() => {
+    const checkToken = async () => {
+      const token = await AsyncStorage.getItem('token');
+      if (!token) {
+        // Zera todos os campos
+        setNameMedic('');
+        setTime1('');
+        setTime2('');
+        setTime3('');
+        setTime4('');
+        setTime5('');
+        setDaysOfWeek([
+          { day: 'Dom', selected: false },
+          { day: 'Seg', selected: false },
+          { day: 'Ter', selected: false },
+          { day: 'Qua', selected: false },
+          { day: 'Qui', selected: false },
+          { day: 'Sex', selected: false },
+          { day: 'Sáb', selected: false },
+        ]);
+      }
+    };
+    checkToken();
+  }, [])
+);
 
   const [daysOfWeek, setDaysOfWeek] = useState([
     { day: 'Dom', selected: false },
@@ -112,23 +141,24 @@ export default function Medications({ navigation }) {
     }
   };
 
-  const handleDateChange = (text) => {
-    const cleaned = text.replace(/\D/g, '');
+  // const handleDateChange = (text) => {
+  //   const cleaned = text.replace(/\D/g, '');
 
-    let formatted = cleaned;
-    if (cleaned.length > 2) {
-      formatted = cleaned.slice(0, 2) + '/' + cleaned.slice(2);
-    }
-    if (cleaned.length > 4) {
-      formatted = formatted.slice(0, 5) + '/' + cleaned.slice(4, 8);
-    }
+  //   let formatted = cleaned;
+  //   if (cleaned.length > 2) {
+  //     formatted = cleaned.slice(0, 2) + '/' + cleaned.slice(2);
+  //   }
+  //   if (cleaned.length > 4) {
+  //     formatted = formatted.slice(0, 5) + '/' + cleaned.slice(4, 8);
+  //   }
 
-    if (formatted.length <= 10) {
-      setDate(formatted);
-    }
-  };
+  //   if (formatted.length <= 10) {
+  //     setDate(formatted);
+  //   }
+  // };
 
-  const handleTimeChange = (text) => {
+  
+  const handleTimeChange1 = (text) => {
     const cleaned = text.replace(/\D/g, '');
 
     let formatted = cleaned;
@@ -140,29 +170,81 @@ export default function Medications({ navigation }) {
       setTime1(formatted);
     }
   };
+  
+  const handleTimeChange2 = (text) => {
+    const cleaned = text.replace(/\D/g, '');
 
-  const isValidDate = (text) => {
-    const [dd, mm, yyyy] = text.split('/');
-    const d = parseInt(dd), m = parseInt(mm), y = parseInt(yyyy);
-    const dateObj = new Date(`${yyyy}-${mm}-${dd}`);
-    return (
-      d > 0 &&
-      m > 0 &&
-      y > 1000 &&
-      d <= 31 &&
-      m <= 12 &&
-      dateObj &&
-      dateObj.getDate() === d &&
-      dateObj.getMonth() + 1 === m &&
-      dateObj.getFullYear() === y
-    );
+    let formatted = cleaned;
+    if (cleaned.length > 2) {
+      formatted = cleaned.slice(0, 2) + ':' + cleaned.slice(2, 4);
+    }
+
+    if (formatted.length <= 5) {
+      setTime2(formatted);
+    }
+  };
+  const handleTimeChange3 = (text) => {
+    const cleaned = text.replace(/\D/g, '');
+
+    let formatted = cleaned;
+    if (cleaned.length > 2) {
+      formatted = cleaned.slice(0, 2) + ':' + cleaned.slice(2, 4);
+    }
+
+    if (formatted.length <= 5) {
+      setTime3(formatted);
+    }
+  };
+  const handleTimeChange4 = (text) => {
+    const cleaned = text.replace(/\D/g, '');
+
+    let formatted = cleaned;
+    if (cleaned.length > 2) {
+      formatted = cleaned.slice(0, 2) + ':' + cleaned.slice(2, 4);
+    }
+
+    if (formatted.length <= 5) {
+      setTime4(formatted);
+    }
+  };
+  const handleTimeChange5 = (text) => {
+    const cleaned = text.replace(/\D/g, '');
+
+    let formatted = cleaned;
+    if (cleaned.length > 2) {
+      formatted = cleaned.slice(0, 2) + ':' + cleaned.slice(2, 4);
+    }
+
+    if (formatted.length <= 5) {
+      setTime5(formatted);
+    }
   };
 
-  const isValidTime = (text) => {
-    const [hh, mm] = text.split(':');
-    const h = parseInt(hh), m = parseInt(mm);
-    return h >= 0 && h <= 23 && m >= 0 && m <= 59;
-  };
+  // const isValidDate = (text) => {
+  //   const [dd, mm, yyyy] = text.split('/');
+  //   const d = parseInt(dd), m = parseInt(mm), y = parseInt(yyyy);
+  //   const dateObj = new Date(`${yyyy}-${mm}-${dd}`);
+  //   return (
+  //     d > 0 &&
+  //     m > 0 &&
+  //     y > 1000 &&
+  //     d <= 31 &&
+  //     m <= 12 &&
+  //     dateObj &&
+  //     dateObj.getDate() === d &&
+  //     dateObj.getMonth() + 1 === m &&
+  //     dateObj.getFullYear() === y
+  //   );
+  // };
+
+  // const isValidTime = (text) => {
+  //   const [hh, mm] = text.split(':');
+  //   const h = parseInt(hh), m = parseInt(mm);
+  //   return h >= 0 && h <= 23 && m >= 0 && m <= 59;
+  // };
+
+  
+
 
   return (
     <View style={styles.container}>
@@ -202,7 +284,7 @@ export default function Medications({ navigation }) {
         placeholder="1º Remédio (ex: 6:30)"
         keyboardType="numeric"
         value={time1}
-        onChangeText={handleTimeChange}
+        onChangeText={handleTimeChange1}
         maxLength={5}
       />
 
@@ -211,7 +293,7 @@ export default function Medications({ navigation }) {
         placeholder="2º Remédio (ex: 10:30)"
         keyboardType="numeric"
         value={time2}
-        onChangeText={handleTimeChange}
+        onChangeText={handleTimeChange2}
         maxLength={5}
       />
 
@@ -220,7 +302,7 @@ export default function Medications({ navigation }) {
         placeholder="3º Remédio (ex: 14:30)"
         keyboardType="numeric"
         value={time3}
-        onChangeText={handleTimeChange}
+        onChangeText={handleTimeChange3}
         maxLength={5}
       />
 
@@ -229,7 +311,7 @@ export default function Medications({ navigation }) {
         placeholder="4º Remédio (ex: 18:30)"
         keyboardType="numeric"
         value={time4}
-        onChangeText={handleTimeChange}
+        onChangeText={handleTimeChange4}
         maxLength={5}
       />
 
@@ -238,12 +320,13 @@ export default function Medications({ navigation }) {
         placeholder="5º Remédio (ex: 22:30)"
         keyboardType="numeric"
         value={time5}
-        onChangeText={handleTimeChange}
+        onChangeText={handleTimeChange5}
         maxLength={5}
       />
 
       <TouchableOpacity style={styles.button} onPress={handleRegister}>
         <Text style={styles.buttonText}>{calendarId ? 'Atualizar' : 'Registrar'}</Text> {/* ALTERADO: texto do botão */}
+
       </TouchableOpacity>
 
       <Text style={styles.footer}>Gerenciar e Melhorar o Seu Bem-Estar</Text>

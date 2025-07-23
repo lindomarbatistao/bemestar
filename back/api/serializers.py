@@ -22,21 +22,21 @@ class PressaoArterialSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = PressaoArterial
-        fields = ['id', 'user', 'data', 'hora']
+        fields = '__all__'
 
 class GlicemiaSerializer(serializers.ModelSerializer):
     user = serializers.ReadOnlyField(source='user.username')
 
     class Meta:
         model = Glicemia
-        fields = ['id', 'user', 'data', 'hora']
+        fields = '__all__'
 
 class ColesterolSerializer(serializers.ModelSerializer):
     user = serializers.ReadOnlyField(source='user.username')
 
     class Meta:
         model = Colesterol
-        fields = ['id', 'user', 'data', 'hora']
+        fields = '__all__'
 
 class CalendarioSerializer(serializers.ModelSerializer):
     user = serializers.ReadOnlyField(source='user.username')
