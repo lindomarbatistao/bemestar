@@ -18,31 +18,31 @@ export default function Medications({ navigation }) {
   const [nameMedic, setNameMedic] = useState('');
 
   useFocusEffect(
-  useCallback(() => {
-    const checkToken = async () => {
-      const token = await AsyncStorage.getItem('token');
-      if (!token) {
-        // Zera todos os campos
-        setNameMedic('');
-        setTime1('');
-        setTime2('');
-        setTime3('');
-        setTime4('');
-        setTime5('');
-        setDaysOfWeek([
-          { day: 'Dom', selected: false },
-          { day: 'Seg', selected: false },
-          { day: 'Ter', selected: false },
-          { day: 'Qua', selected: false },
-          { day: 'Qui', selected: false },
-          { day: 'Sex', selected: false },
-          { day: 'Sáb', selected: false },
-        ]);
-      }
-    };
-    checkToken();
-  }, [])
-);
+    useCallback(() => {
+      const checkToken = async () => {
+        const token = await AsyncStorage.getItem('token');
+        if (!token) {
+          // Zera todos os campos
+          setNameMedic('');
+          setTime1('');
+          setTime2('');
+          setTime3('');
+          setTime4('');
+          setTime5('');
+          setDaysOfWeek([
+            { day: 'Dom', selected: false },
+            { day: 'Seg', selected: false },
+            { day: 'Ter', selected: false },
+            { day: 'Qua', selected: false },
+            { day: 'Qui', selected: false },
+            { day: 'Sex', selected: false },
+            { day: 'Sáb', selected: false },
+          ]);
+        }
+      };
+      checkToken();
+    }, [])
+  );
 
   const [daysOfWeek, setDaysOfWeek] = useState([
     { day: 'Dom', selected: false },
@@ -157,7 +157,7 @@ export default function Medications({ navigation }) {
   //   }
   // };
 
-  
+
   const handleTimeChange1 = (text) => {
     const cleaned = text.replace(/\D/g, '');
 
@@ -170,7 +170,7 @@ export default function Medications({ navigation }) {
       setTime1(formatted);
     }
   };
-  
+
   const handleTimeChange2 = (text) => {
     const cleaned = text.replace(/\D/g, '');
 
@@ -243,7 +243,7 @@ export default function Medications({ navigation }) {
   //   return h >= 0 && h <= 23 && m >= 0 && m <= 59;
   // };
 
-  
+
 
 
   return (
@@ -325,8 +325,9 @@ export default function Medications({ navigation }) {
       />
 
       <TouchableOpacity style={styles.button} onPress={handleRegister}>
-        <Text style={styles.buttonText}>{calendarId ? 'Atualizar' : 'Registrar'}</Text> {/* ALTERADO: texto do botão */}
-
+        <Text style={styles.buttonText}>
+          {calendarId ? 'Atualizar' : 'Registrar'}
+        </Text>
       </TouchableOpacity>
 
       <Text style={styles.footer}>Gerenciar e Melhorar o Seu Bem-Estar</Text>

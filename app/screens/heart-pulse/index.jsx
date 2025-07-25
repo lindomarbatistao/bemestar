@@ -9,6 +9,8 @@ export default function HeartPulse({ navigation }) {
   const [date, setDate] = useState('');
   const [time, setTime] = useState('');
   const [pressure, setPressure] = useState('');
+  const [alta, setAlta] = useState('');
+  const [baixa, setBaixa] = useState('');
 
   const handleDateChange = (text) => {
     const cleaned = text.replace(/\D/g, '');
