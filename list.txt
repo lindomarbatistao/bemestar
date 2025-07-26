@@ -1,0 +1,18 @@
+ O volume na unidade C n∆o tem nome.
+ O N£mero de SÇrie do Volume Ç 267E-6826
+
+ Pasta de C:\Users\desktop\Desktop\bemestar
+
+26/07/2025  09:21    <DIR>          .
+26/07/2025  08:53    <DIR>          ..
+25/07/2025  15:13                19 .gitignore
+26/07/2025  08:43             3.297 01 - README - INICIAR EMULADOR ANDROID.txt
+26/07/2025  08:43             2.833 02 - README - INSTALAÄ«O DO NPM.txt
+26/07/2025  08:43             2.556 03 - README - INSTALAÄ«O DO YARN.txt
+26/07/2025  09:16             2.725 04 - README - RODAR APLICAÄ«O.txt
+25/07/2025  15:13    <DIR>          app
+25/07/2025  15:13    <DIR>          back
+26/07/2025  09:21                 0 list.txt
+26/07/2025  09:20           901.681 Validaá∆o da Proposta.docx
+               7 arquivo(s)        913.111 bytes
+               4 pasta(s)   849.717.157.888 bytes dispon°veis
