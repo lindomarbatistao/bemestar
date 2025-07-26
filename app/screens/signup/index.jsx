@@ -20,7 +20,7 @@ export default function SignUp({ navigation }) {
     })
     .then(response => {
       Alert.alert("Sucesso", "Usuário criado com sucesso!");
-      AsyncStorage.setItem('token', response.data.access); // salva token
+      AsyncStorage.setItem('token', response.data.access); 
       navigation.navigate('Home');
     })
     .catch(error => {

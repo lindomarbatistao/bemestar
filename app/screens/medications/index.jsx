@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'; // ALTERADO: adicionado useEffect
+import React, { useState, useEffect } from 'react'; 
 import { View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
 import styles from './styles';
 import Icon from 'react-native-vector-icons/Feather';
@@ -8,7 +8,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import { useCallback } from 'react';
 
 export default function Medications({ navigation }) {
-  const [calendarId, setCalendarId] = useState(null); // ALTERADO: controle do ID para PUT
+  const [calendarId, setCalendarId] = useState(null); 
   const [date, setDate] = useState('');
   const [time1, setTime1] = useState('');
   const [time2, setTime2] = useState('');
@@ -60,7 +60,6 @@ export default function Medications({ navigation }) {
     setDaysOfWeek(updated);
   };
 
-  // ALTERADO: Novo useEffect para buscar dados existentes
   useEffect(() => {
     const fetchCalendario = async () => {
       try {
@@ -70,7 +69,7 @@ export default function Medications({ navigation }) {
         });
 
         if (response.data.length > 0) {
-          const calendar = response.data[0]; // Considera o primeiro registro
+          const calendar = response.data[0]; 
           setCalendarId(calendar.id);
           setNameMedic(calendar.nome);
           setTime1(calendar.hora1 || '');
@@ -118,7 +117,6 @@ export default function Medications({ navigation }) {
 
       let response;
       if (calendarId) {
-        // ALTERADO: Se existir ID, usa PUT
         response = await axios.put(
           `http://192.168.15.6:8000/api/calendario/${calendarId}/`,
           payload,
@@ -126,11 +124,10 @@ export default function Medications({ navigation }) {
         );
         Alert.alert('Sucesso', 'Dados atualizados com sucesso!');
       } else {
-        // ALTERADO: Caso contrário, usa POST
         response = await axios.post('http://192.168.15.6:8000/api/calendario/', payload, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        setCalendarId(response.data.id); // Guarda o novo ID para futuros PUTs
+        setCalendarId(response.data.id); 
         Alert.alert('Sucesso', 'Dados registrados com sucesso!');
       }
 
@@ -140,23 +137,6 @@ export default function Medications({ navigation }) {
       Alert.alert('Erro', 'Falha ao registrar/atualizar. Verifique os dados ou o login.');
     }
   };
-
-  // const handleDateChange = (text) => {
-  //   const cleaned = text.replace(/\D/g, '');
-
-  //   let formatted = cleaned;
-  //   if (cleaned.length > 2) {
-  //     formatted = cleaned.slice(0, 2) + '/' + cleaned.slice(2);
-  //   }
-  //   if (cleaned.length > 4) {
-  //     formatted = formatted.slice(0, 5) + '/' + cleaned.slice(4, 8);
-  //   }
-
-  //   if (formatted.length <= 10) {
-  //     setDate(formatted);
-  //   }
-  // };
-
 
   const handleTimeChange1 = (text) => {
     const cleaned = text.replace(/\D/g, '');
@@ -219,32 +199,6 @@ export default function Medications({ navigation }) {
       setTime5(formatted);
     }
   };
-
-  // const isValidDate = (text) => {
-  //   const [dd, mm, yyyy] = text.split('/');
-  //   const d = parseInt(dd), m = parseInt(mm), y = parseInt(yyyy);
-  //   const dateObj = new Date(`${yyyy}-${mm}-${dd}`);
-  //   return (
-  //     d > 0 &&
-  //     m > 0 &&
-  //     y > 1000 &&
-  //     d <= 31 &&
-  //     m <= 12 &&
-  //     dateObj &&
-  //     dateObj.getDate() === d &&
-  //     dateObj.getMonth() + 1 === m &&
-  //     dateObj.getFullYear() === y
-  //   );
-  // };
-
-  // const isValidTime = (text) => {
-  //   const [hh, mm] = text.split(':');
-  //   const h = parseInt(hh), m = parseInt(mm);
-  //   return h >= 0 && h <= 23 && m >= 0 && m <= 59;
-  // };
-
-
-
 
   return (
     <View style={styles.container}>

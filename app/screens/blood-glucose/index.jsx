@@ -81,7 +81,7 @@ export default function Bloodglic({ navigation }) {
     const token = await AsyncStorage.getItem('token');
 
     const [dd, mm, yyyy] = date.split('/');
-    const dataFormatada = `${yyyy}-${mm}-${dd}`; // formato ISO
+    const dataFormatada = `${yyyy}-${mm}-${dd}`; 
 
     const payload = {
       glic: glicValue,
@@ -89,7 +89,7 @@ export default function Bloodglic({ navigation }) {
       hora: time,
     };
 
-    console.log('Payload enviado:', payload); // útil para debug
+    console.log('Payload enviado:', payload); 
 
     await axios.post('http://192.168.15.6:8000/api/glicemia/', payload, {
       headers: {

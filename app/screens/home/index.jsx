@@ -9,7 +9,7 @@ export default function Home({ navigation }) {
       <Text style={styles.title}>Monitor de Saúde</Text>
 
       <Image
-        source={require('../../assets/saude.png')} // ajustado com base na sua estrutura
+        source={require('../../assets/saude.png')} 
         style={styles.image}
         resizeMode="contain"
       />
