@@ -1,4 +1,6 @@
-README - INICIAR EMULADOR ANDROID VIA PROMPT DE COMANDO (CMD)
+README
+
+INICIAR EMULADOR ANDROID VIA PROMPT DE COMANDO (CMD)
 ==============================================================
 
 Este guia ensina como iniciar um emulador Android diretamente pelo terminal no Windows,
