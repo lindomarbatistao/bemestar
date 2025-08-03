@@ -1,0 +1,47 @@
+.blood-container {
+    max-width: 400px;
+    margin: 4rem auto;
+    padding: 2rem;
+    border-radius: 10px;
+    background-color: #f0f9ff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.blood-form input {
+    width: 100%;
+    margin: 1rem 0;
+    padding: 0.75rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+.blood-form button {
+    width: 100%;
+    padding: 0.75rem;
+    background-color: #0077b6;
+    color: white;
+    font-size: 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.blood-form button:hover {
+    background-color: #005b8f;
+}
+
+.back-button {
+    margin-top: 1rem;
+    background-color: transparent;
+    border: 1px solid #0077b6;
+    color: #0077b6;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.back-button:hover {
+    background-color: #e0f0f8;
+}
