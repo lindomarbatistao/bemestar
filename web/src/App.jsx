@@ -3,14 +3,22 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/home";
 import Glicemia from "./pages/glicemia";
 import Pressure from "./pages/pressure";
+import Initial from "./pages/initial";
+import Login from "./pages/login";
+import SignUp from "./pages/signup";
+
 
 export default function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="glicemia" element={<Glicemia />}/>
-        <Route path="pressao" element={<Pressure />}/>
+        <Route path="/" element={<Initial />} />
+        <Route path="home" element={<Home/>}/>
+        <Route path="glicemia" element={<Glicemia/>}/>
+        <Route path="pressao" element={<Pressure/>}/>
+        <Route path="initial" element={<Initial/>}/>
+        <Route path="login" element={<Login/>}/>
+        <Route path="signup" element={<SignUp/>}/>
       </Routes>
     </Router>
   );

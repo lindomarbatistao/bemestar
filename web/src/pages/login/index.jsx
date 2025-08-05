@@ -1,50 +1,63 @@
 import React, { useState } from 'react';
-import './Login.css';
+import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import './styles.css';
 
 export default function Login() {
-    const [username, setUsername] = useState('');
+    const [user, setUser] = useState('');
     const [password, setPassword] = useState('');
+    const [remember, setRemember] = useState(false);
     const navigate = useNavigate();
 
-    const handleLogin = async (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         try {
             const response = await axios.post('http://localhost:8000/api/token/', {
-                username,
+                username: user,
                 password,
             });
-
             localStorage.setItem('token', response.data.access);
-            alert('Login realizado com sucesso!');
-            navigate('/'); // Redireciona para Home
+            console.log('Token Login: ', response.data.access);
+            localStorage.setItem('username', user);
+            navigate('/home');
         } catch (error) {
-            alert('Credenciais inválidas.');
-            console.error('Erro no login:', error.response?.data || error.message);
+            alert('E-mail ou senha inválidos.');
         }
-    }
+    };
 
     return (
-        <div className="login-container">
-            <h2>Login</h2>
-            <form className="login-form" onSubmit={handleLogin}>
+        <div className="login-wrapper">
+            <form className="login-box" onSubmit={handleSubmit}>
+                <h2 className="login-title">Login</h2>
+
+                <label>Usuário</label>
                 <input
-                    type="text"
-                    placeholder="Usuário"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
+                    type="user"
+                    placeholder="usuário"
+                    value={user}
+                    onChange={(e) => setUser(e.target.value)}
                     required
+                    className='input_login'
                 />
+
+                <label>Senha</label>
                 <input
                     type="password"
-                    placeholder="Senha"
+                    placeholder="senha"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
+                    className='input_login'
                 />
 
-                <button type="submit">Entrar</button>
+
+                <div className='center_login'>
+                    <button type="submit" className="login-button">Entrar</button>
+                </div>
+
+                <div className="signup-text">
+                    Ainda não tem conta? <Link to="/signup">Cadastre-se</Link>
+                </div>
             </form>
         </div>
     );

@@ -7,7 +7,7 @@ body,
     padding: 0;
 }
 
-.container {
+.container_home {
     min-height: 100vh;
     display: flex;
     flex-direction: column;

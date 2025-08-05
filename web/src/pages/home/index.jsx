@@ -5,9 +5,10 @@ import './styles.css';
 
 export default function Home() {
     return (
-        <div className="container">
+        <div className="container_home">
             <h1 className="title">Monitor de Saúde</h1>
             <p className="description">Acompanhe seus indicadores de saúde:</p>
+            <p>Bem-vindo, {localStorage.getItem('username')}</p>
             <div className="gridContainer">
                 <Link to="/pressao" className="iconBox">
                     <FaHeartbeat size={40} color="#e63946" />
@@ -30,11 +31,7 @@ export default function Home() {
                 </Link>
             </div>
 
-            <div className="buttonRow">
-                <Link to="/login" className="button">Login</Link>
-                <Link to="/signup" className="buttonOutline">Sign Up</Link>
-            </div>
-
+        
             <p className="footer">Gerenciar e Melhorar o Seu Bem-Estar</p>
         </div>
     );
