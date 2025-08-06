@@ -1,0 +1,68 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+.wrapper_pressure {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #f0f4f8;
+}
+
+.container_pressure {
+  background: #ffffff;
+  padding: 30px 40px;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 500px;
+}
+
+.title_pressure {
+  font-size: 28px;
+  color: #0077b6;
+  margin-bottom: 25px;
+  text-align: center;
+}
+
+.form_pressure {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.input_pressure {
+  padding: 14px 16px;
+  border: 1px solid #cbd5e1;
+  border-radius: 12px;
+  font-size: 16px;
+  outline: none;
+  background-color: #fcfbf9;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.input_pressure:focus {
+  border-color: #0077b6;
+  box-shadow: 0 0 0 3px rgba(0, 119, 182, 0.2);
+  background-color: #ffffff;
+}
+
+.button_pressure {
+  background-color: #0077b6;
+  color: #ffffff;
+  font-weight: bold;
+  cursor: pointer;
+  padding: 14px 16px;
+  border: 1px solid #cbd5e1;
+  border-radius: 12px;
+  font-size: 16px;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.button_pressure:hover {
+  background-color: #005f91;
+}
