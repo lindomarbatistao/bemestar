@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './styles.css';
 
@@ -7,6 +8,7 @@ export default function PressureForm() {
   const [time, setTime] = useState('');
   const [systolic, setSystolic] = useState('');
   const [diastolic, setDiastolic] = useState('');
+  const navigate = useNavigate();
 
   const handleDateChange = (e) => {
     const text = e.target.value.replace(/\D/g, '');
@@ -70,10 +72,31 @@ export default function PressureForm() {
     }
   };
 
-  return (
+  const handleBack = () => {
+    navigate('/home');
+  };
 
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    navigate('/initial');
+  };
+
+  return (
     <div className="wrapper_pressure">
       <div className="container_pressure">
+        <div className="top_buttons">
+          <button className="icon_button" onClick={handleBack} title="Voltar">
+            <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M15 18l-6-6 6-6" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </button>
+          <button className="icon_button" onClick={handleLogout} title="Logout">
+            <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M16 17l5-5-5-5M21 12H9M13 5v-2a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v18a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-2" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </button>
+        </div>
+
         <h1 className="title_pressure">Registrar Pressão Arterial</h1>
         <form onSubmit={handleSubmit} className="form_pressure">
           <input
@@ -83,7 +106,7 @@ export default function PressureForm() {
             onChange={handleDateChange}
             maxLength={10}
             className='input_pressure'
-            />
+          />
           <input
             type="text"
             placeholder="Hora (ex: 14:30)"
@@ -91,14 +114,14 @@ export default function PressureForm() {
             onChange={handleTimeChange}
             maxLength={5}
             className='input_pressure'
-            />
+          />
           <input
             type="number"
             placeholder="Pressão Alta (ex: 120)"
             value={systolic}
             onChange={(e) => setSystolic(e.target.value)}
             className='input_pressure'
-            />
+          />
           <input
             type="number"
             placeholder="Pressão Baixa (ex: 80)"
@@ -106,11 +129,14 @@ export default function PressureForm() {
             onChange={(e) => setDiastolic(e.target.value)}
             className='input_pressure'
           />
-          <button type="submit">Registrar</button>
+          <button type="submit" className="button_pressure">Registrar</button>
+
+          <div className="chart_container">
+            <h2 className="chart_title">Gráfico de Pressões Registradas</h2>
+            <div className="chart_placeholder">[Gráfico aqui]</div>
+          </div>
         </form>
       </div>
     </div>
-
-
   );
 }

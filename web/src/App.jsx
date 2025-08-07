@@ -6,6 +6,7 @@ import Pressure from "./pages/pressure";
 import Initial from "./pages/initial";
 import Login from "./pages/login";
 import SignUp from "./pages/signup";
+import Cholesterol from "./pages/cholesterol";
 
 
 export default function App() {
@@ -19,6 +20,7 @@ export default function App() {
         <Route path="initial" element={<Initial/>}/>
         <Route path="login" element={<Login/>}/>
         <Route path="signup" element={<SignUp/>}/>
+        <Route path="colesterol" element={<Cholesterol/>}/>
       </Routes>
     </Router>
   );

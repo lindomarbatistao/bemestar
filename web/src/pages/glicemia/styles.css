@@ -1,24 +1,123 @@
-.container_glicemia {
-  max-width: 400px;
-  margin: auto;
-  padding: 2rem;
+.wrapper_glicemia {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 40px;
+  background: #f0f4f8;
+  position: relative;
 }
 
-.title {
+.top_buttons_gli {
+  position: absolute; 
+  top: 20px; 
+  left: 0;
+  right: 0;
+  padding: 0 0;
+  display: flex;
+  justify-content: space-between;
+  z-index: 1; 
+  width: 90%;
+  background-color: #5a189a;
+}
+
+.icon_button {
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: 50%;
+  padding: 10px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.icon_button:hover {
+  background-color: #e0e7ff;
+}
+
+.container_glicemia {
+  background: #ffffff;
+  padding: 60px 40px 30px;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.title_glicemia {
+  font-size: 28px;
+  color: #7b2cbf;
+  margin-bottom: 25px;
   text-align: center;
 }
 
-input {
-  display: block;
+.form_glicemia {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
   width: 100%;
-  margin-bottom: 1rem;
-  padding: 0.5rem;
+  align-items: center;
 }
 
-button {
-  padding: 0.5rem 1rem;
-  background-color: #0077b6;
-  color: white;
-  border: none;
+.input_glicemia {
+  padding: 14px 16px;
+  border: 1px solid #cbd5e1;
+  border-radius: 12px;
+  font-size: 16px;
+  outline: none;
+  background-color: #fcfbf9;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  width: 80%;
+}
+
+.input_glicemia:focus {
+  border-color: #7b2cbf;
+  box-shadow: 0 0 0 3px rgba(123, 44, 191, 0.2);
+  background-color: #ffffff;
+}
+
+.button_glicemia {
+  background-color: #7b2cbf;
+  color: #ffffff;
   cursor: pointer;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  width: 40%;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease;
+}
+
+.button_glicemia:hover {
+  background-color: #5a189a;
+}
+
+.chart_container {
+  margin-top: 40px;
+  width: 100%;
+}
+
+.chart_title {
+  font-size: 20px;
+  margin-bottom: 10px;
+  color: #333333;
+  text-align: center;
+}
+
+.chart_placeholder {
+  height: 200px;
+  background-color: #e2e8f0;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #64748b;
+  font-style: italic;
 }
