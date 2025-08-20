@@ -25,7 +25,7 @@ export default function Home() {
                     <span className="iconLabel">Colesterol</span>
                 </Link>
 
-                <Link to="/medicamentos" className="iconBox">
+                <Link to="/medications" className="iconBox">
                     <FaCalendarAlt size={40} color="#2a9d8f" />
                     <span className="iconLabel">Medicamentos</span>
                 </Link>

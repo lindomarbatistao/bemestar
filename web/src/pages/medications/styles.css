@@ -1,0 +1,150 @@
+/* src/pages/medications.css */
+html, body { margin: 0; padding: 0; height: 100%; }
+
+.meds_wrapper {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #f0f4f8;
+  position: relative;
+}
+
+.meds_container {
+  background: #b5f7fc;
+  padding: 30px 40px;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0,0,0,.1);
+  width: 100%;
+  max-width: 700px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.top_buttons {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  right: 20px;
+  display: flex;
+  justify-content: space-between;
+  max-width: 500px;
+  margin: 0 auto;
+  margin-top: 55px;
+}
+
+.icon_button {
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: 50%;
+  padding: 10px;
+  cursor: pointer;
+  transition: background-color .2s;
+  box-shadow: 0 2px 6px rgba(0,0,0,.1);
+}
+
+.icon_button:hover { background-color: #caf0f8; }
+
+.title_meds {
+  font-size: 28px;
+  color: #0077b6;
+  margin-bottom: 25px;
+  margin-top: 40px;
+  text-align: center;
+}
+
+.meds_form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  align-items: center;
+}
+
+.input_meds {
+  padding: 14px 16px;
+  border: 1px solid #cbd5e1;
+  border-radius: 12px;
+  font-size: 16px;
+  outline: none;
+  background-color: #fcfbf9;
+  transition: border-color .2s, box-shadow .2s;
+  width: 80%;
+}
+
+.input_meds:focus {
+  border-color: #0077b6;
+  box-shadow: 0 0 0 3px rgba(0,119,182,.2);
+  background-color: #ffffff;
+}
+
+.meds_label {
+  width: 80%;
+  font-size: 14px;
+  font-weight: 600;
+  color: #475569;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  margin-top: 8px;
+}
+
+.days_grid {
+  width: 80%;
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(7, 1fr);
+}
+
+@media (max-width: 720px) { .days_grid { grid-template-columns: repeat(4, 1fr); } }
+@media (max-width: 480px) { .days_grid { grid-template-columns: repeat(3, 1fr); } }
+
+.day_box {
+  border: 1px solid #cbd5e1;
+  background: #ffffff;
+  color: #0f172a;
+  padding: 10px 0;
+  border-radius: 12px;
+  cursor: pointer;
+  text-align: center;
+  font-weight: 600;
+  transition: background-color .2s, box-shadow .2s, border-color .2s;
+}
+
+.day_box:hover {
+  background-color: #f1f5f9;
+  box-shadow: 0 2px 6px rgba(0,0,0,.06);
+}
+
+.day_box_selected {
+  background-color: #e0f2fe;
+  border-color: #38bdf8;
+  color: #075985;
+  box-shadow: 0 2px 8px rgba(56,189,248,.25);
+}
+
+.button_meds {
+  background-color: #0077b6;
+  color: #ffffff;
+  cursor: pointer;
+  border: 1px solid #cbd5e1;
+  border-radius: 12px;
+  font-size: 16px;
+  outline: none;
+  transition: background-color .2s, box-shadow .2s;
+  width: 40%;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.button_meds:hover { background-color: #005f91; }
+
+.meds_footer {
+  margin-top: 8px;
+  color: #64748b;
+  text-align: center;
+  font-size: 13px;
+}

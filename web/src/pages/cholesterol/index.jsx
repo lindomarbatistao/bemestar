@@ -91,6 +91,7 @@ export default function Cholesterol() {
   };
 
   return (
+    <div className="wrapper_colesterol">
     <div className="cholesterol-container">
       <div className="top_buttons">
         <button className="icon_button" onClick={handleBack} title="Voltar">
@@ -148,6 +149,7 @@ export default function Cholesterol() {
           <div className="chart_placeholder">[Gráfico aqui]</div>
         </div>
       </form>
+    </div>
     </div>
   );
 }

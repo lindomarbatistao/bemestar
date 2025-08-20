@@ -62,11 +62,6 @@ export default function Glicemia() {
         hora: horaApi,
         glic: parseInt(glic, 10),
       };
-
-      console.log('Token: ', token);
-      console.log('Glic: ', parseInt(glic, 10));
-      
-      
       await axios.post('http://localhost:8000/api/glicemia/', payload, {
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -75,7 +70,6 @@ export default function Glicemia() {
       setTime('');
       setGlic('');
     } catch (error) {
-      console.error(error);
       alert('Erro ao registrar. Verifique os dados ou tente novamente.');
     }
   };
@@ -92,7 +86,7 @@ export default function Glicemia() {
   return (
     <div className="wrapper_glicemia">
       <div className="container_glicemia">
-        <div className="top_buttons_gli">
+        <div className="top_buttons">
           <button className="icon_button" onClick={handleBack} title="Voltar">
             <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
               <path d="M15 18l-6-6 6-6" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" />

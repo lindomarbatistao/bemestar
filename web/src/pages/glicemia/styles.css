@@ -2,23 +2,34 @@
   min-height: 100vh;
   display: flex;
   justify-content: center;
-  align-items: flex-start;
-  padding-top: 40px;
+  align-items: center;
   background: #f0f4f8;
   position: relative;
 }
 
-.top_buttons_gli {
-  position: absolute; 
-  top: 20px; 
-  left: 0;
-  right: 0;
-  padding: 0 0;
+.container_glicemia {
+  background: #c9d2f8;
+  padding: 30px 40px;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.top_buttons {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  right: 20px;
   display: flex;
   justify-content: space-between;
-  z-index: 1; 
-  width: 90%;
-  background-color: #5a189a;
+  max-width: 500px;
+  margin: 0 auto;
+  margin-top: 55px;
+  /* background-color: #7b2cbf; */
 }
 
 .icon_button {
@@ -32,26 +43,14 @@
 }
 
 .icon_button:hover {
-  background-color: #e0e7ff;
-}
-
-.container_glicemia {
-  background: #ffffff;
-  padding: 60px 40px 30px;
-  border-radius: 16px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  max-width: 600px;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  position: relative;
+  background-color: #caf0f8;
 }
 
 .title_glicemia {
   font-size: 28px;
   color: #7b2cbf;
   margin-bottom: 25px;
+  margin-top: 40px;
   text-align: center;
 }
 
