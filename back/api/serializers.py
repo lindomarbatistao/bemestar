@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from .models import PressaoArterial, Glicemia, Colesterol, Calendario
 from rest_framework import serializers
+from django.contrib.auth.password_validation import validate_password
 
 class UserSignupSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)

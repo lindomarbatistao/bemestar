@@ -8,6 +8,7 @@ export default function BloodGlucose() {
     const [time, setTime] = useState('');
     const [glucose, setGlucose] = useState('');
     const navigate = useNavigate();
+    const token = localStorage.getItem("token")
 
     const isValidDate = (text) => {
         const [dd, mm, yyyy] = text.split('/');

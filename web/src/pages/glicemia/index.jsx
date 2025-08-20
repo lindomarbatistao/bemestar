@@ -7,6 +7,7 @@ export default function Glicemia() {
   const [time, setTime] = useState('');
   const [glic, setGlic] = useState('');
   const navigate = useNavigate();
+  const token = localStorage.getItem("token")
 
   const handleSubmit = (e) => {
     e.preventDefault();

@@ -20,7 +20,7 @@ class Colesterol(models.Model):
     hora = models.TimeField()
     ldl = models.IntegerField()
     hdl = models.IntegerField()
-    
+
 class Calendario(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     nome = models.CharField(max_length=100)

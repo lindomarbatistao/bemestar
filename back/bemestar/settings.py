@@ -1,5 +1,11 @@
 from pathlib import Path
 from datetime import timedelta
+import environ
+
+
+env = environ.Env(
+    DEBUG=(bool, True),
+)
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -7,7 +13,7 @@ SECRET_KEY = 'django-insecure-zn@*l636i4rah8ua+-hv7ly+p%op(+j$ik+ql7ws18@#0_996o
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -23,6 +29,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',

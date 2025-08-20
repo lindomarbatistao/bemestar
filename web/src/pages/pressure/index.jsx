@@ -9,6 +9,7 @@ export default function PressureForm() {
   const [systolic, setSystolic] = useState('');
   const [diastolic, setDiastolic] = useState('');
   const navigate = useNavigate();
+  const token = localStorage.getItem("token")
 
   const handleDateChange = (e) => {
     const text = e.target.value.replace(/\D/g, '');
@@ -26,15 +27,28 @@ export default function PressureForm() {
   };
 
   const isValidDate = (text) => {
+    if (!/^\d{2}\/\d{2}\/\d{4}$/.test(text)) return false;
+
     const [dd, mm, yyyy] = text.split('/');
-    const d = parseInt(dd), m = parseInt(mm), y = parseInt(yyyy);
-    const dateObj = new Date(`${yyyy}-${mm}-${dd}`);
-    return d > 0 && m > 0 && y > 1000 && d <= 31 && m <= 12 && dateObj.getDate() === d && dateObj.getMonth() + 1 === m && dateObj.getFullYear() === y;
+    const d = parseInt(dd, 10);
+    const m = parseInt(mm, 10);
+    const y = parseInt(yyyy, 10);
+
+    if (d < 1 || d > 31 || m < 1 || m > 12 || y < 1000) return false;
+
+    // Constrói em horário local (evita o deslocamento UTC)
+    const dateObj = new Date(y, m - 1, d);
+    return (
+      dateObj.getFullYear() === y &&
+      dateObj.getMonth() + 1 === m &&
+      dateObj.getDate() === d
+    );
   };
 
   const isValidTime = (text) => {
+    if (!/^\d{2}:\d{2}$/.test(text)) return false;
     const [hh, mm] = text.split(':');
-    const h = parseInt(hh), m = parseInt(mm);
+    const h = parseInt(hh, 10), m = parseInt(mm, 10);
     return h >= 0 && h <= 23 && m >= 0 && m <= 59;
   };
 
@@ -53,14 +67,28 @@ export default function PressureForm() {
       const [dd, mm, yyyy] = date.split('/');
       const dataFormatada = `${yyyy}-${mm}-${dd}`;
 
+      // Se vier só hh:mm, envie hh:mm:00 (DRF aceita ambos, mas hh:mm:ss é mais seguro)
+      const horaApi = time.length === 5 ? `${time}:00` : time;
+
       const payload = {
         data: dataFormatada,
-        hora: time,
-        alta: parseInt(systolic),
-        baixa: parseInt(diastolic),
+        hora: horaApi,
+        alta: parseInt(systolic, 10),
+        baixa: parseInt(diastolic, 10),
       };
 
-      await axios.post('http://localhost:8000/api/pressao/', payload);
+      console.log("Data formatada: ", dataFormatada);
+      console.log("Hora: ", horaApi);
+      console.log("alta: ", parseInt(systolic, 10));
+      console.log("baixa: ", parseInt(diastolic, 10));
+
+
+      await axios.post('http://localhost:8000/api/pressao/', payload, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
       alert('Pressão registrada com sucesso!');
       setDate('');
       setTime('');
@@ -98,6 +126,7 @@ export default function PressureForm() {
         </div>
 
         <h1 className="title_pressure">Registrar Pressão Arterial</h1>
+
         <form onSubmit={handleSubmit} className="form_pressure">
           <input
             type="text"
@@ -105,30 +134,34 @@ export default function PressureForm() {
             value={date}
             onChange={handleDateChange}
             maxLength={10}
-            className='input_pressure'
+            className="input_pressure"
           />
+
           <input
             type="text"
             placeholder="Hora (ex: 14:30)"
             value={time}
             onChange={handleTimeChange}
             maxLength={5}
-            className='input_pressure'
+            className="input_pressure"
           />
+
           <input
             type="number"
             placeholder="Pressão Alta (ex: 120)"
             value={systolic}
             onChange={(e) => setSystolic(e.target.value)}
-            className='input_pressure'
+            className="input_pressure"
           />
+
           <input
             type="number"
             placeholder="Pressão Baixa (ex: 80)"
             value={diastolic}
             onChange={(e) => setDiastolic(e.target.value)}
-            className='input_pressure'
+            className="input_pressure"
           />
+
           <button type="submit" className="button_pressure">Registrar</button>
 
           <div className="chart_container">

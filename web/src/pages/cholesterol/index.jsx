@@ -9,6 +9,7 @@ export default function Cholesterol() {
     const [ldl, setLdl] = useState('');
     const [hdl, setHdl] = useState('');
     const navigate = useNavigate();
+    const token = localStorage.getItem("token")
 
     const isValidDate = (text) => {
         const [dd, mm, yyyy] = text.split('/');

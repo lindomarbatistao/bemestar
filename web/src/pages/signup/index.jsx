@@ -11,12 +11,16 @@ export default function SignUp() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        console.log("username: ", user);
+        console.log("email: ", email);
+        console.log("password: ", password);
+        
         try {
             // 1) Cadastra usuário
-            await axios.post('http://localhost:8000/api/users/', {
+            await axios.post('http://localhost:8000/api/signup/', {
                 username: user,
-                email,
-                password,
+                email: email,
+                password: password,
             });
 
             // 2) Faz login automático para pegar token
