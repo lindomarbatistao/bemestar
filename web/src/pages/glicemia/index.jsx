@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import './styles.css';
 
 export default function Glicemia() {
@@ -7,23 +8,85 @@ export default function Glicemia() {
   const [time, setTime] = useState('');
   const [glic, setGlic] = useState('');
   const navigate = useNavigate();
-  const token = localStorage.getItem("token")
+  const token = localStorage.getItem('token');
 
-  const handleSubmit = (e) => {
+  const handleDateChange = (e) => {
+    const text = e.target.value.replace(/\D/g, '');
+    let formatted = text;
+    if (text.length > 2) formatted = text.slice(0, 2) + '/' + text.slice(2);
+    if (text.length > 4) formatted = formatted.slice(0, 5) + '/' + text.slice(4, 8);
+    if (formatted.length <= 10) setDate(formatted);
+  };
+
+  const handleTimeChange = (e) => {
+    const text = e.target.value.replace(/\D/g, '');
+    let formatted = text;
+    if (text.length > 2) formatted = text.slice(0, 2) + ':' + text.slice(2, 4);
+    if (formatted.length <= 5) setTime(formatted);
+  };
+
+  const isValidDate = (text) => {
+    if (!/^\d{2}\/\d{2}\/\d{4}$/.test(text)) return false;
+    const [dd, mm, yyyy] = text.split('/');
+    const d = parseInt(dd, 10);
+    const m = parseInt(mm, 10);
+    const y = parseInt(yyyy, 10);
+    if (d < 1 || d > 31 || m < 1 || m > 12 || y < 1000) return false;
+    const dateObj = new Date(y, m - 1, d);
+    return dateObj.getFullYear() === y && dateObj.getMonth() + 1 === m && dateObj.getDate() === d;
+  };
+
+  const isValidTime = (text) => {
+    if (!/^\d{2}:\d{2}$/.test(text)) return false;
+    const [hh, mm] = text.split(':');
+    const h = parseInt(hh, 10), m = parseInt(mm, 10);
+    return h >= 0 && h <= 23 && m >= 0 && m <= 59;
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    alert(`Data: ${date}, Hora: ${time}, Glicemia: ${glic}`);
-    setDate('');
-    setTime('');
-    setGlic('');
+    if (!isValidDate(date)) {
+      alert('Data inválida. Use o formato dd/mm/aaaa.');
+      return;
+    }
+    if (!isValidTime(time)) {
+      alert('Hora inválida. Use o formato hh:mm.');
+      return;
+    }
+    try {
+      const [dd, mm, yyyy] = date.split('/');
+      const dataFormatada = `${yyyy}-${mm}-${dd}`;
+      const horaApi = time.length === 5 ? `${time}:00` : time;
+      const payload = {
+        data: dataFormatada,
+        hora: horaApi,
+        glic: parseInt(glic, 10),
+      };
+
+      console.log('Token: ', token);
+      console.log('Glic: ', parseInt(glic, 10));
+      
+      
+      await axios.post('http://localhost:8000/api/glicemia/', payload, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      alert('Glicemia registrada com sucesso!');
+      setDate('');
+      setTime('');
+      setGlic('');
+    } catch (error) {
+      console.error(error);
+      alert('Erro ao registrar. Verifique os dados ou tente novamente.');
+    }
   };
 
   const handleBack = () => {
-    navigate('/home'); 
+    navigate('/home');
   };
 
   const handleLogout = () => {
-    localStorage.removeItem('token'); 
-    navigate('/initial'); 
+    localStorage.removeItem('token');
+    navigate('/initial');
   };
 
   return (
@@ -48,18 +111,20 @@ export default function Glicemia() {
             type="text"
             placeholder="Data (ex: 16/07/2025)"
             value={date}
-            onChange={(e) => setDate(e.target.value)}
+            onChange={handleDateChange}
+            maxLength={10}
             className="input_glicemia"
           />
           <input
             type="text"
             placeholder="Hora (ex: 14:30)"
             value={time}
-            onChange={(e) => setTime(e.target.value)}
+            onChange={handleTimeChange}
+            maxLength={5}
             className="input_glicemia"
           />
           <input
-            type="text"
+            type="number"
             placeholder="Glicemia (ex: 85)"
             value={glic}
             onChange={(e) => setGlic(e.target.value)}
