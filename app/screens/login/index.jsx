@@ -11,7 +11,7 @@ export default function Login({ navigation }) {
 
   const handleLogin = async () => {
     try {
-      const response = await axios.post('http://192.168.15.6:8000/api/token/', {
+      const response = await axios.post('http://192.168.1.66:8000/api/token/', {
         username: username,
         password: password,
       });

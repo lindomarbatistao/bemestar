@@ -91,7 +91,7 @@ export default function Bloodglic({ navigation }) {
 
     console.log('Payload enviado:', payload); 
 
-    await axios.post('http://192.168.15.6:8000/api/glicemia/', payload, {
+    await axios.post('http://192.168.1.66:8000/api/glicemia/', payload, {
       headers: {
         Authorization: `Bearer ${token}`,
       },

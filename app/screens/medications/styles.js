@@ -1,136 +1,257 @@
 import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
+  /* Layout base */
   container: {
     flex: 1,
-    backgroundColor: '#f6fafd',
-    padding: 20,
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-
+    backgroundColor: '#f3f6fb',
+    paddingHorizontal: 16,
+    paddingTop: 24,
   },
   title: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    color: '#0077b6',
-    marginTop: 100,
-    marginBottom: 20,
+    fontSize: 24,
+    fontWeight: '800',
+    color: '#0b72b9',
+    alignSelf: 'center',
+    marginBottom: 12,
   },
-  input1: {
+
+  /* Form */
+  inputName: {
     width: '100%',
     paddingVertical: 12,
-    paddingHorizontal: 15,
-    marginVertical: 5,
+    paddingHorizontal: 14,
+    marginVertical: 6,
     backgroundColor: '#ffffff',
     borderRadius: 12,
     borderWidth: 1,
-    borderColor: '#d0d7de',
+    borderColor: '#dbe3ee',
     fontSize: 16,
-    elevation: 2, // sombra leve para Android
-    shadowColor: '#000', // sombra iOS
+    elevation: 2,
+    shadowColor: '#000',
     shadowOpacity: 0.05,
     shadowOffset: { width: 0, height: 1 },
     shadowRadius: 4,
   },
-  input2: {
-    width: '70%',
-    paddingVertical: 12,
-    paddingHorizontal: 15,
-    marginVertical: 5,
-    backgroundColor: '#ffffff',
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: '#d0d7de',
-    fontSize: 16,
-    elevation: 2, // sombra leve para Android
-    shadowColor: '#000', // sombra iOS
-    shadowOpacity: 0.05,
-    shadowOffset: { width: 0, height: 1 },
-    shadowRadius: 4,
-  },
-  button: {
-    backgroundColor: '#0077b6',
-    paddingVertical: 14,
-    paddingHorizontal: 30,
-    borderRadius: 12,
-    alignItems: 'center',
-    marginTop: 20,
-    width: '100%',
-    elevation: 3,
-  },
-  buttonText: {
-    color: '#fff',
-    fontSize: 17,
-    fontWeight: 'bold',
-  },
-  graphPlaceholder: {
-    width: '100%',
-    height: 220,
-    marginTop: 30,
-    borderWidth: 2,
-    borderColor: '#a5c9ea',
-    borderStyle: 'dashed',
-    borderRadius: 16,
-    backgroundColor: '#e8f4fb',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  graphText: {
-    color: '#5b768d',
-    fontSize: 16,
-    fontStyle: 'italic',
-  },
-  footer: {
-    marginTop: 20,
-    fontSize: 15,
-    color: '#444',
-    textAlign: 'center',
-  },
-  homeButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 20,
-    padding: 10,
+
+  sectionLabel: {
+    marginTop: 12,
+    marginBottom: 6,
+    fontSize: 13,
+    fontWeight: '700',
+    color: '#475569',
+    textTransform: 'uppercase',
+    letterSpacing: 0.8,
   },
 
-  homeText: {
-    marginLeft: 8,
-    fontSize: 16,
-    color: '#0077b6',
-    fontWeight: 'bold',
-  },
-
+ 
   daysContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    justifyContent: 'space-between',
-    marginVertical: 10,
-    gap: 2,
+    gap: 8,
+    // backgroundColor: 'red',
+    alignItems:'center',
+    justifyContent:'center'
   },
 
   dayBox: {
-    width: '13%',
+    width: '10%',
     aspectRatio: 1,
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: '#0077b6',
-    borderRadius: 8,
+    borderColor: '#0b72b9',
+    borderRadius: 10,
+    backgroundColor: '#fff',
   },
-
   dayBoxSelected: {
-    backgroundColor: '#0077b6',
+    backgroundColor: '#0b72b9',
   },
-
   dayText: {
-    color: '#0077b6',
-    fontWeight: 'bold',
+    color: '#0b72b9',
+    fontWeight: '700',
+    fontSize: 12,
   },
-
   dayTextSelected: {
-    color: '#fff',
+    color: '#0dc726ff',
   },
 
+  timeGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+    gap: 8,
+  },
+  inputTime: {
+    width: '30%',           
+    paddingVertical: 10,
+    paddingHorizontal: 12,
+    marginVertical: 4,
+    backgroundColor: '#ffffff',
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: '#dbe3ee',
+    fontSize: 15,
+    elevation: 2,
+    shadowColor: '#000',
+    shadowOpacity: 0.05,
+    shadowOffset: { width: 0, height: 1 },
+    shadowRadius: 4,
+  },
 
+  /* Botões principais */
+  buttonPrimary: {
+    backgroundColor: '#0b72b9',
+    paddingVertical: 14,
+    paddingHorizontal: 20,
+    borderRadius: 12,
+    alignItems: 'center',
+    marginTop: 12,
+    elevation: 3,
+  },
+  buttonPrimaryText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: '800',
+  },
+  actionsRow: {
+    flexDirection: 'row',
+    gap: 8,
+    marginTop: 12,
+  },
+  buttonSecondary: {
+    paddingVertical: 14,
+    paddingHorizontal: 16,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: '#dbe3ee',
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  buttonSecondaryText: {
+    color: '#0f172a',
+    fontSize: 16,
+    fontWeight: '700',
+  },
+
+  helperText: {
+    marginTop: 8,
+    fontSize: 13,
+    color: '#64748b',
+    textAlign: 'center',
+  },
+
+  /* Lista */
+  listHeader: {
+    marginTop: 16,
+    marginBottom: 6,
+  },
+  listTitle: {
+    fontSize: 16,
+    color: '#0b72b9',
+    fontWeight: '800',
+  },
+  emptyBox: {
+    borderWidth: 1,
+    borderStyle: 'dashed',
+    borderColor: '#dbe3ee',
+    borderRadius: 12,
+    paddingVertical: 16,
+    paddingHorizontal: 12,
+    alignItems: 'center',
+    backgroundColor: '#f8fbff',
+    marginTop: 6,
+  },
+  emptyText: {
+    color: '#64748b',
+  },
+
+  card: {
+    borderWidth: 1,
+    borderColor: '#dbe3ee',
+    borderRadius: 14,
+    backgroundColor: '#fff',
+    padding: 12,
+    marginBottom: 10,
+    elevation: 2,
+    shadowColor: '#000',
+    shadowOpacity: 0.05,
+    shadowOffset: { width: 0, height: 1 },
+    shadowRadius: 4,
+  },
+  cardHead: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 8,
+  },
+  cardTitle: {
+    fontWeight: '800',
+    color: '#0f172a',
+    fontSize: 16,
+  },
+  cardActions: {
+    flexDirection: 'row',
+    gap: 8,
+  },
+  iconAction: {
+    width: 34,
+    height: 34,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: '#dbe3ee',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#fff',
+  },
+  danger: {
+    borderColor: '#fecdd3',
+    backgroundColor: '#fff5f5',
+  },
+
+  chipsRow: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 6,
+  },
+  chip: {
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    borderRadius: 999,
+    borderWidth: 1,
+    borderColor: '#dbe3ee',
+    backgroundColor: '#f8fafc',
+  },
+  chipOn: {
+    backgroundColor: '#e6f9ef',
+    borderColor: '#b6e7c9',
+  },
+  chipOff: {
+    backgroundColor: '#fff7ed',
+    borderColor: '#fed7aa',
+  },
+  chipTime: {
+    backgroundColor: '#eef6ff',
+    borderColor: '#c7ddff',
+  },
+  chipText: { fontSize: 12, fontWeight: '700' },
+  chipTextOn: { color: '#166534' },
+  chipTextOff: { color: '#9a3412' },
+  chipTextTime: { color: '#1e3a8a' },
+
+  /* Home */
+  homeButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    alignSelf: 'center',
+    marginTop: 12,
+    padding: 8,
+  },
+  homeText: {
+    marginLeft: 8,
+    fontSize: 15,
+    color: '#0b72b9',
+    fontWeight: '800',
+  },
 });

@@ -13,7 +13,7 @@ export default function SignUp({ navigation }) {
   const handleSignUp = () => {
     console.log(username, password, email);
         
-    axios.post('http://192.168.15.6:8000/api/signup/', {
+    axios.post('http://192.168.1.66:8000/api/signup/', {
       username: username,
       password: password,
       email: email

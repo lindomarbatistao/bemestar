@@ -87,7 +87,7 @@ export default function HeartPulse({ navigation }) {
       };
 
 
-      await axios.post('http://192.168.15.6:8000/api/pressao/', payload, {
+      await axios.post('http://192.168.1.66:8000/api/pressao/', payload, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
