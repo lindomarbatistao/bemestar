@@ -34,11 +34,7 @@ export default function Cholesterol() {
     const y = parseInt(yyyy, 10);
     if (d < 1 || d > 31 || m < 1 || m > 12 || y < 1000) return false;
     const dateObj = new Date(y, m - 1, d);
-    return (
-      dateObj.getFullYear() === y &&
-      dateObj.getMonth() + 1 === m &&
-      dateObj.getDate() === d
-    );
+    return dateObj.getFullYear() === y && dateObj.getMonth() + 1 === m && dateObj.getDate() === d;
   };
 
   const isValidTime = (text) => {
@@ -50,106 +46,97 @@ export default function Cholesterol() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!isValidDate(date)) {
-      alert('Data inválida. Use o formato dd/mm/aaaa.');
-      return;
-    }
-    if (!isValidTime(time)) {
-      alert('Hora inválida. Use o formato hh:mm.');
-      return;
-    }
+    if (!isValidDate(date)) return alert('Data inválida. Use o formato dd/mm/aaaa.');
+    if (!isValidTime(time)) return alert('Hora inválida. Use o formato hh:mm.');
     try {
       const [dd, mm, yyyy] = date.split('/');
       const dataFormatada = `${yyyy}-${mm}-${dd}`;
       const horaApi = time.length === 5 ? `${time}:00` : time;
-      const payload = {
-        ldl: parseInt(ldl, 10),
-        hdl: parseInt(hdl, 10),
-        data: dataFormatada,
-        hora: horaApi
-      };
+      const payload = { ldl: parseInt(ldl, 10), hdl: parseInt(hdl, 10), data: dataFormatada, hora: horaApi };
+
       await axios.post('http://localhost:8000/api/colesterol/', payload, {
         headers: { Authorization: `Bearer ${token}` }
       });
+
       alert('Colesterol registrado com sucesso!');
-      setDate('');
-      setTime('');
-      setLdl('');
-      setHdl('');
-    } catch (error) {
+      setDate(''); setTime(''); setLdl(''); setHdl('');
+    } catch {
       alert('Erro ao registrar. Verifique os dados e tente novamente.');
     }
   };
 
-  const handleBack = () => {
-    navigate('/home');
-  };
-
-  const handleLogout = () => {
-    localStorage.removeItem('token');
-    navigate('/initial');
-  };
+  const handleBack = () => navigate('/home');
+  const handleLogout = () => { localStorage.removeItem('token'); navigate('/initial'); };
 
   return (
-    <div className="wrapper_colesterol">
-    <div className="cholesterol-container">
-      <div className="top_buttons">
-        <button className="icon_button" onClick={handleBack} title="Voltar">
-          <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M15 18l-6-6 6-6" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-        </button>
-        <button className="icon_button" onClick={handleLogout} title="Logout">
-          <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M16 17l5-5-5-5M21 12H9M13 5v-2a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v18a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-2" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-        </button>
+    <div className="wrapper_cholesterol">
+      <div className="container_cholesterol">
+        <header className="header_bar">
+          <button className="icon_button_col" onClick={handleBack} title="Voltar" aria-label="Voltar">
+            <svg width="22" height="22" viewBox="0 0 24 24">
+              <path d="M15 18l-6-6 6-6" stroke="currentColor" strokeWidth="1" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </button>
+
+          <h2 className="title_cholesterol">Registrar Colesterol</h2>
+
+          <button className="icon_button_col" onClick={handleLogout} title="Logout" aria-label="Logout">
+            <svg width="22" height="22" viewBox="0 0 24 24">
+              <path d="M16 17l5-5-5-5M21 12H9M13 5v-2a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v18a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-2"
+                    stroke="currentColor" strokeWidth="1" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </button>
+        </header>
+
+        <form className="form_cholesterol" onSubmit={handleSubmit}>
+          <div className="grid grid-2">
+            <input
+              type="text"
+              placeholder="Data (ex: 16/07/2025)"
+              value={date}
+              onChange={handleDateChange}
+              maxLength={10}
+              required
+              className="input_cholesterol"
+            />
+            <input
+              type="text"
+              placeholder="Hora (ex: 14:30)"
+              value={time}
+              onChange={handleTimeChange}
+              maxLength={5}
+              required
+              className="input_cholesterol"
+            />
+          </div>
+
+          <div className="grid grid-2">
+            <input
+              type="number"
+              placeholder="LDL (ex: 100)"
+              value={ldl}
+              onChange={(e) => setLdl(e.target.value)}
+              required
+              className="input_cholesterol"
+            />
+            <input
+              type="number"
+              placeholder="HDL (ex: 60)"
+              value={hdl}
+              onChange={(e) => setHdl(e.target.value)}
+              required
+              className="input_cholesterol"
+            />
+          </div>
+
+          <button type="submit" className="button_cholesterol">Registrar</button>
+
+          <section className="chart_container">
+            <h3 className="chart_title">Gráfico de Colesterol</h3>
+            <div className="chart_placeholder">[Gráfico aqui]</div>
+          </section>
+        </form>
       </div>
-
-      <h2 className="title_cholesterol">Registrar Colesterol</h2>
-      <form className="cholesterol-form" onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="Data (ex: 16/07/2025)"
-          value={date}
-          onChange={handleDateChange}
-          maxLength={10}
-          required
-          className="input_cholesterol"
-        />
-        <input
-          type="text"
-          placeholder="Hora (ex: 14:30)"
-          value={time}
-          onChange={handleTimeChange}
-          maxLength={5}
-          required
-          className="input_cholesterol"
-        />
-        <input
-          type="number"
-          placeholder="LDL (ex: 100)"
-          value={ldl}
-          onChange={(e) => setLdl(e.target.value)}
-          required
-          className="input_cholesterol"
-        />
-        <input
-          type="number"
-          placeholder="HDL (ex: 60)"
-          value={hdl}
-          onChange={(e) => setHdl(e.target.value)}
-          required
-          className="input_cholesterol"
-        />
-        <button type="submit" className="button_cholesterol">Registrar</button>
-
-        <div className="chart_container">
-          <h2 className="chart_title">Gráfico de Colesterol</h2>
-          <div className="chart_placeholder">[Gráfico aqui]</div>
-        </div>
-      </form>
-    </div>
     </div>
   );
 }

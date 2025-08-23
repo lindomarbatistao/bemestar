@@ -1,7 +1,8 @@
+// src/pages/Glicemia.jsx
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import './styles.css';
+import './styles.css'; // ou './glicemia.css' se separar
 
 export default function Glicemia() {
   const [date, setDate] = useState('');
@@ -45,78 +46,70 @@ export default function Glicemia() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!isValidDate(date)) {
-      alert('Data inválida. Use o formato dd/mm/aaaa.');
-      return;
-    }
-    if (!isValidTime(time)) {
-      alert('Hora inválida. Use o formato hh:mm.');
-      return;
-    }
+    if (!isValidDate(date)) return alert('Data inválida. Use o formato dd/mm/aaaa.');
+    if (!isValidTime(time)) return alert('Hora inválida. Use o formato hh:mm.');
+
     try {
       const [dd, mm, yyyy] = date.split('/');
       const dataFormatada = `${yyyy}-${mm}-${dd}`;
       const horaApi = time.length === 5 ? `${time}:00` : time;
-      const payload = {
-        data: dataFormatada,
-        hora: horaApi,
-        glic: parseInt(glic, 10),
-      };
+
+      const payload = { data: dataFormatada, hora: horaApi, glic: parseInt(glic, 10) };
+
       await axios.post('http://localhost:8000/api/glicemia/', payload, {
         headers: { Authorization: `Bearer ${token}` },
       });
+
       alert('Glicemia registrada com sucesso!');
-      setDate('');
-      setTime('');
-      setGlic('');
-    } catch (error) {
+      setDate(''); setTime(''); setGlic('');
+    } catch {
       alert('Erro ao registrar. Verifique os dados ou tente novamente.');
     }
   };
 
-  const handleBack = () => {
-    navigate('/home');
-  };
-
-  const handleLogout = () => {
-    localStorage.removeItem('token');
-    navigate('/initial');
-  };
+  const handleBack = () => navigate('/home');
+  const handleLogout = () => { localStorage.removeItem('token'); navigate('/initial'); };
 
   return (
     <div className="wrapper_glicemia">
       <div className="container_glicemia">
-        <div className="top_buttons">
-          <button className="icon_button" onClick={handleBack} title="Voltar">
-            <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M15 18l-6-6 6-6" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+        <header className="header_bar">
+          <button className="icon_button_gli" onClick={handleBack} title="Voltar" aria-label="Voltar">
+            <svg width="22" height="22" viewBox="0 0 24 24">
+              <path d="M15 18l-6-6 6-6" stroke="currentColor" strokeWidth="1" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
           </button>
-          <button className="icon_button" onClick={handleLogout} title="Logout">
-            <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M16 17l5-5-5-5M21 12H9M13 5v-2a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v18a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-2" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </button>
-        </div>
 
-        <h1 className="title_glicemia">Registrar Glicemia</h1>
+          <h1 className="title_glicemia">Registrar Glicemia</h1>
+
+          <button className="icon_button_gli" onClick={handleLogout} title="Logout" aria-label="Logout">
+            <svg width="22" height="22" viewBox="0 0 24 24">
+              <path d="M16 17l5-5-5-5M21 12H9M13 5v-2a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v18a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-2"
+                    stroke="currentColor" strokeWidth="1" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </button>
+        </header>
+
         <form onSubmit={handleSubmit} className="form_glicemia">
-          <input
-            type="text"
-            placeholder="Data (ex: 16/07/2025)"
-            value={date}
-            onChange={handleDateChange}
-            maxLength={10}
-            className="input_glicemia"
-          />
-          <input
-            type="text"
-            placeholder="Hora (ex: 14:30)"
-            value={time}
-            onChange={handleTimeChange}
-            maxLength={5}
-            className="input_glicemia"
-          />
+          <div className="grid grid-2">
+            <input
+              type="text"
+              placeholder="Data (ex: 16/07/2025)"
+              value={date}
+              onChange={handleDateChange}
+              maxLength={10}
+              className="input_glicemia"
+            />
+            <input
+              type="text"
+              placeholder="Hora (ex: 14:30)"
+              value={time}
+              onChange={handleTimeChange}
+              maxLength={5}
+              className="input_glicemia"
+            />
+          </div>
+
           <input
             type="number"
             placeholder="Glicemia (ex: 85)"
@@ -124,13 +117,14 @@ export default function Glicemia() {
             onChange={(e) => setGlic(e.target.value)}
             className="input_glicemia"
           />
-          <button type="submit" className="button_glicemia">Registrar</button>
-        </form>
 
-        <div className="chart_container">
-          <h2 className="chart_title">Gráfico de Glicemia</h2>
-          <div className="chart_placeholder">[Gráfico aqui]</div>
-        </div>
+          <button type="submit" className="button_glicemia">Registrar</button>
+
+          <section className="chart_container">
+            <h2 className="chart_title">Gráfico de Glicemia</h2>
+            <div className="chart_placeholder">[Gráfico aqui]</div>
+          </section>
+        </form>
       </div>
     </div>
   );

@@ -1,3 +1,4 @@
+// PressureForm.jsx
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -9,7 +10,7 @@ export default function PressureForm() {
   const [systolic, setSystolic] = useState('');
   const [diastolic, setDiastolic] = useState('');
   const navigate = useNavigate();
-  const token = localStorage.getItem("token")
+  const token = localStorage.getItem('token');
 
   const handleDateChange = (e) => {
     const text = e.target.value.replace(/\D/g, '');
@@ -28,15 +29,11 @@ export default function PressureForm() {
 
   const isValidDate = (text) => {
     if (!/^\d{2}\/\d{2}\/\d{4}$/.test(text)) return false;
-
     const [dd, mm, yyyy] = text.split('/');
     const d = parseInt(dd, 10);
     const m = parseInt(mm, 10);
     const y = parseInt(yyyy, 10);
-
     if (d < 1 || d > 31 || m < 1 || m > 12 || y < 1000) return false;
-
-    // Constrói em horário local (evita o deslocamento UTC)
     const dateObj = new Date(y, m - 1, d);
     return (
       dateObj.getFullYear() === y &&
@@ -54,20 +51,12 @@ export default function PressureForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    if (!isValidDate(date)) {
-      return alert('Data inválida. Use o formato dd/mm/aaaa.');
-    }
-
-    if (!isValidTime(time)) {
-      return alert('Hora inválida. Use o formato hh:mm.');
-    }
+    if (!isValidDate(date)) return alert('Data inválida. Use o formato dd/mm/aaaa.');
+    if (!isValidTime(time)) return alert('Hora inválida. Use o formato hh:mm.');
 
     try {
       const [dd, mm, yyyy] = date.split('/');
       const dataFormatada = `${yyyy}-${mm}-${dd}`;
-
-      // Se vier só hh:mm, envie hh:mm:00 (DRF aceita ambos, mas hh:mm:ss é mais seguro)
       const horaApi = time.length === 5 ? `${time}:00` : time;
 
       const payload = {
@@ -77,97 +66,84 @@ export default function PressureForm() {
         baixa: parseInt(diastolic, 10),
       };
 
-      console.log("Data formatada: ", dataFormatada);
-      console.log("Hora: ", horaApi);
-      console.log("alta: ", parseInt(systolic, 10));
-      console.log("baixa: ", parseInt(diastolic, 10));
-
-
       await axios.post('http://localhost:8000/api/pressao/', payload, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
       });
 
       alert('Pressão registrada com sucesso!');
-      setDate('');
-      setTime('');
-      setSystolic('');
-      setDiastolic('');
+      setDate(''); setTime(''); setSystolic(''); setDiastolic('');
     } catch (error) {
       console.error('Erro ao registrar:', error);
       alert('Erro ao registrar. Verifique os dados ou tente novamente.');
     }
   };
 
-  const handleBack = () => {
-    navigate('/home');
-  };
-
-  const handleLogout = () => {
-    localStorage.removeItem('token');
-    navigate('/initial');
-  };
+  const handleBack = () => navigate('/home');
+  const handleLogout = () => { localStorage.removeItem('token'); navigate('/initial'); };
 
   return (
     <div className="wrapper_pressure">
       <div className="container_pressure">
-        <div className="top_buttons">
-          <button className="icon_button" onClick={handleBack} title="Voltar">
-            <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M15 18l-6-6 6-6" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+        <header className="header_bar">
+          <button className="icon_button_pre" onClick={handleBack} title="Voltar" aria-label="Voltar">
+            <svg width="22" height="22" viewBox="0 0 24 24">
+              <path d="M15 18l-6-6 6-6" stroke="currentColor" strokeWidth="1" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
           </button>
-          <button className="icon_button" onClick={handleLogout} title="Logout">
-            <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M16 17l5-5-5-5M21 12H9M13 5v-2a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v18a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-2" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </button>
-        </div>
 
-        <h1 className="title_pressure">Registrar Pressão Arterial</h1>
+          <h1 className="title_pressure">Registrar Pressão Arterial</h1>
+
+          <button className="icon_button_pre" onClick={handleLogout} title="Logout" aria-label="Logout">
+            <svg width="22" height="22" viewBox="0 0 24 24">
+              <path d="M16 17l5-5-5-5M21 12H9M13 5v-2a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v18a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-2"
+                    stroke="currentColor" strokeWidth="1" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </button>
+        </header>
 
         <form onSubmit={handleSubmit} className="form_pressure">
-          <input
-            type="text"
-            placeholder="Data (ex: 16/07/2025)"
-            value={date}
-            onChange={handleDateChange}
-            maxLength={10}
-            className="input_pressure"
-          />
+          <div className="grid grid-2">
+            <input
+              type="text"
+              placeholder="Data (ex: 16/07/2025)"
+              value={date}
+              onChange={handleDateChange}
+              maxLength={10}
+              className="input_pressure"
+            />
+            <input
+              type="text"
+              placeholder="Hora (ex: 14:30)"
+              value={time}
+              onChange={handleTimeChange}
+              maxLength={5}
+              className="input_pressure"
+            />
+          </div>
 
-          <input
-            type="text"
-            placeholder="Hora (ex: 14:30)"
-            value={time}
-            onChange={handleTimeChange}
-            maxLength={5}
-            className="input_pressure"
-          />
-
-          <input
-            type="number"
-            placeholder="Pressão Alta (ex: 120)"
-            value={systolic}
-            onChange={(e) => setSystolic(e.target.value)}
-            className="input_pressure"
-          />
-
-          <input
-            type="number"
-            placeholder="Pressão Baixa (ex: 80)"
-            value={diastolic}
-            onChange={(e) => setDiastolic(e.target.value)}
-            className="input_pressure"
-          />
+          <div className="grid grid-2">
+            <input
+              type="number"
+              placeholder="Pressão Alta (ex: 120)"
+              value={systolic}
+              onChange={(e) => setSystolic(e.target.value)}
+              className="input_pressure"
+            />
+            <input
+              type="number"
+              placeholder="Pressão Baixa (ex: 80)"
+              value={diastolic}
+              onChange={(e) => setDiastolic(e.target.value)}
+              className="input_pressure"
+            />
+          </div>
 
           <button type="submit" className="button_pressure">Registrar</button>
 
-          <div className="chart_container">
+          <section className="chart_container">
             <h2 className="chart_title">Gráfico de Pressões Registradas</h2>
             <div className="chart_placeholder">[Gráfico aqui]</div>
-          </div>
+          </section>
         </form>
       </div>
     </div>

@@ -2,7 +2,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import './styles.css';
+import './styles.css'; // ou './medications.css'
 
 export default function Medications() {
   const [calendarId, setCalendarId] = useState(null);
@@ -55,11 +55,7 @@ export default function Medications() {
 
   const resetAll = useCallback(() => {
     setNameMedic('');
-    setTime1('');
-    setTime2('');
-    setTime3('');
-    setTime4('');
-    setTime5('');
+    setTime1(''); setTime2(''); setTime3(''); setTime4(''); setTime5('');
     setDaysOfWeek([
       { day: 'Dom', selected: false },
       { day: 'Seg', selected: false },
@@ -75,10 +71,7 @@ export default function Medications() {
   useEffect(() => {
     const fetchCalendario = async () => {
       try {
-        if (!token) {
-          resetAll();
-          return;
-        }
+        if (!token) { resetAll(); return; }
         const res = await axios.get('http://localhost:8000/api/calendario/', {
           headers: { Authorization: `Bearer ${token}` },
         });
@@ -107,10 +100,7 @@ export default function Medications() {
   }, [token, resetAll]);
 
   const handleRegister = async () => {
-    if (!token) {
-      alert('Faça login para continuar.');
-      return;
-    }
+    if (!token) { alert('Faça login para continuar.'); return; }
     if (![time1, time2, time3, time4, time5].every(isValidTime)) {
       alert('Hora inválida. Use o formato hh:mm.');
       return;
@@ -149,29 +139,27 @@ export default function Medications() {
   };
 
   const handleBack = () => navigate('/home');
-  const handleLogout = () => {
-    localStorage.removeItem('token');
-    resetAll();
-    navigate('/initial');
-  };
+  const handleLogout = () => { localStorage.removeItem('token'); resetAll(); navigate('/initial'); };
 
   return (
     <div className="meds_wrapper">
       <div className="meds_container">
-        <div className="top_buttons">
-          <button className="icon_button" onClick={handleBack} title="Voltar">
-            <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M15 18l-6-6 6-6" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+        <header className="header_bar">
+          <button className="icon_button_med" onClick={handleBack} title="Voltar" aria-label="Voltar">
+            <svg width="22" height="22" viewBox="0 0 24 24">
+              <path d="M15 18l-6-6 6-6" stroke="currentColor" strokeWidth="1" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
           </button>
-          <button className="icon_button" onClick={handleLogout} title="Logout">
-            <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M16 17l5-5-5-5M21 12H9M13 5v-2a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v18a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-2" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </button>
-        </div>
 
-        <h1 className="title_meds">Medicamento</h1>
+          <h1 className="title_meds">Medicamentos</h1>
+
+          <button className="icon_button_med" onClick={handleLogout} title="Logout" aria-label="Logout">
+            <svg width="22" height="22" viewBox="0 0 24 24">
+              <path d="M16 17l5-5-5-5M21 12H9M13 5v-2a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v18a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-2"
+                    stroke="currentColor" strokeWidth="1" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </button>
+        </header>
 
         <div className="meds_form">
           <input
@@ -190,6 +178,7 @@ export default function Medications() {
                 type="button"
                 onClick={() => toggleDay(idx)}
                 className={`day_box ${item.selected ? 'day_box_selected' : ''}`}
+                aria-pressed={item.selected}
               >
                 {item.day}
               </button>
@@ -197,14 +186,20 @@ export default function Medications() {
           </div>
 
           <h3 className="meds_label">Horários</h3>
-          <input type="text" className="input_meds" placeholder="1º Remédio (ex: 06:30)" value={time1} onChange={(e) => handleTimeChange1(e.target.value)} maxLength={5} inputMode="numeric" />
-          <input type="text" className="input_meds" placeholder="2º Remédio (ex: 10:30)" value={time2} onChange={(e) => handleTimeChange2(e.target.value)} maxLength={5} inputMode="numeric" />
-          <input type="text" className="input_meds" placeholder="3º Remédio (ex: 14:30)" value={time3} onChange={(e) => handleTimeChange3(e.target.value)} maxLength={5} inputMode="numeric" />
-          <input type="text" className="input_meds" placeholder="4º Remédio (ex: 18:30)" value={time4} onChange={(e) => handleTimeChange4(e.target.value)} maxLength={5} inputMode="numeric" />
-          <input type="text" className="input_meds" placeholder="5º Remédio (ex: 22:30)" value={time5} onChange={(e) => handleTimeChange5(e.target.value)} maxLength={5} inputMode="numeric" />
+          <div className="grid grid-2">
+            <input type="text" className="input_meds" placeholder="1º Remédio (ex: 06:30)" value={time1} onChange={(e) => handleTimeChange1(e.target.value)} maxLength={5} inputMode="numeric" />
+            <input type="text" className="input_meds" placeholder="2º Remédio (ex: 10:30)" value={time2} onChange={(e) => handleTimeChange2(e.target.value)} maxLength={5} inputMode="numeric" />
+          </div>
+          <div className="grid grid-3">
+            <input type="text" className="input_meds" placeholder="3º Remédio (ex: 14:30)" value={time3} onChange={(e) => handleTimeChange3(e.target.value)} maxLength={5} inputMode="numeric" />
+            <input type="text" className="input_meds" placeholder="4º Remédio (ex: 18:30)" value={time4} onChange={(e) => handleTimeChange4(e.target.value)} maxLength={5} inputMode="numeric" />
+            <input type="text" className="input_meds" placeholder="5º Remédio (ex: 22:30)" value={time5} onChange={(e) => handleTimeChange5(e.target.value)} maxLength={5} inputMode="numeric" />
+          </div>
 
-          <button className="button_meds" onClick={handleRegister}>{calendarId ? 'Atualizar' : 'Registrar'}</button>
-          <p className="meds_footer">Gerenciar e Melhorar o Seu Bem-Estar</p>
+          <button className="button_meds" onClick={handleRegister}>
+            {calendarId ? 'Atualizar' : 'Registrar'}
+          </button>
+          <p className="meds_footer">Gerencie seus horários com facilidade</p>
         </div>
       </div>
     </div>
