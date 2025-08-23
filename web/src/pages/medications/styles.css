@@ -1,4 +1,6 @@
-/* medications.css (ou adicione ao seu styles.css do app) */
+/* ===========================
+   Tokens / Reset
+   =========================== */
 :root{
   --bg: #f3f6fb;
   --card: #ffffff;
@@ -13,14 +15,24 @@
 }
 
 * { box-sizing: border-box; }
-html, body { height: 100%; margin: 0; padding: 0; background: var(--bg); color: var(--text); font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial; }
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+}
 
+/* ===========================
+   Wrapper / Container
+   =========================== */
 .meds_wrapper{
   min-height: 100dvh;
   display: grid;
   place-items: center;
   padding: clamp(12px, 3vw, 32px);
-  background-color: #0060a0;
+  background-color: #0060a0; /* fundo da tela (pode trocar) */
 }
 
 .meds_container{
@@ -35,7 +47,9 @@ html, body { height: 100%; margin: 0; padding: 0; background: var(--bg); color: 
   gap: clamp(16px, 2.5vw, 28px);
 }
 
-/* Cabeçalho fluido (sem position absolute) */
+/* ===========================
+   Header
+   =========================== */
 .header_bar{
   display: grid;
   grid-template-columns: 40px 1fr 40px;
@@ -51,18 +65,24 @@ html, body { height: 100%; margin: 0; padding: 0; background: var(--bg); color: 
   color: var(--brand);
 }
 
+/* Ícones do header (quadrados) */
 .icon_button_med{
-  height: 40px;
-  width: 40px;
+  height: 40px; width: 40px;
+  display: grid; place-items: center;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 0; /* quadrado */
   cursor: pointer;
   transition: transform .08s ease, box-shadow .15s ease, background-color .2s ease;
-  box-shadow: 0 2px 10px rgba(15, 23, 42, .06);
+  box-shadow: 0 2px 10px rgba(15,23,42,.06);
 }
-.icon_button:hover{ background:#f1f8ff; }
-.icon_button:active{ transform: scale(.97); }
-.icon_button:focus-visible{ outline: none; box-shadow: var(--ring); }
+.icon_button_med:hover{ background:#f1f8ff; }
+.icon_button_med:active{ transform: scale(.97); }
+.icon_button_med:focus-visible{ outline:none; box-shadow: var(--ring); }
 
-/* Form fluido */
+/* ===========================
+   Formulário
+   =========================== */
 .meds_form{
   display: flex;
   flex-direction: column;
@@ -94,7 +114,7 @@ html, body { height: 100%; margin: 0; padding: 0; background: var(--bg); color: 
   letter-spacing: .06em;
 }
 
-/* Grades adaptáveis */
+/* Grades adaptáveis dos inputs de hora */
 .grid{ display: grid; gap: clamp(10px, 2vw, 16px); }
 .grid-2{ grid-template-columns: 1fr; }
 .grid-3{ grid-template-columns: 1fr; }
@@ -106,7 +126,7 @@ html, body { height: 100%; margin: 0; padding: 0; background: var(--bg); color: 
   .grid-3{ grid-template-columns: repeat(3,1fr); }
 }
 
-/* Dias da semana com grid fluido */
+/* Dias da semana */
 .days_grid{
   width: 100%;
   display: grid;
@@ -137,7 +157,7 @@ html, body { height: 100%; margin: 0; padding: 0; background: var(--bg); color: 
   box-shadow: 0 2px 8px rgba(56,189,248,.25);
 }
 
-/* Botão principal elástico */
+/* Botões principais */
 .button_meds{
   width: 100%;
   height: clamp(44px, 6.5vh, 56px);
@@ -156,6 +176,25 @@ html, body { height: 100%; margin: 0; padding: 0; background: var(--bg); color: 
 .button_meds:active{ transform: translateY(1px); }
 .button_meds:focus-visible{ outline: none; box-shadow: var(--ring); }
 
+/* Ações quando em edição */
+.actions_row{
+  display: grid;
+  grid-template-columns: 1fr max-content;
+  gap: 10px;
+}
+.button_secondary{
+  height: clamp(44px, 6.5vh, 56px);
+  padding: 0 16px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: #fff;
+  color: var(--text);
+  font-weight: 600;
+  cursor: pointer;
+  transition: box-shadow .15s ease, background-color .15s ease;
+}
+.button_secondary:hover{ background:#f8fafc; box-shadow: 0 2px 8px rgba(0,0,0,.06); }
+
 .meds_footer{
   margin: 6px 0 0;
   color: var(--muted);
@@ -163,13 +202,103 @@ html, body { height: 100%; margin: 0; padding: 0; background: var(--bg); color: 
   font-size: clamp(.8rem, .75rem + .25vw, .9rem);
 }
 
-/* Tema escuro opcional */
+/* ===========================
+   Lista de Medicamentos
+   =========================== */
+.meds_list{
+  margin-top: clamp(12px, 3vw, 24px);
+  width: 100%;
+}
+.list_title{
+  margin: 0 0 8px;
+  font-size: clamp(1rem, .95rem + .3vw, 1.15rem);
+  color: var(--brand);
+  font-weight: 700;
+}
+.list_empty{
+  width: 100%;
+  padding: 16px;
+  border: 1px dashed var(--line);
+  border-radius: 12px;
+  color: var(--muted);
+  text-align: center;
+  background: #f8fbff;
+}
+
+.cards{
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 12px;
+}
+.card{
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 2px 10px rgba(2,24,49,.05);
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.card_head{
+  display: grid;
+  grid-template-columns: 1fr max-content;
+  align-items: center;
+  gap: 10px;
+}
+.med_name{
+  font-weight: 700;
+  color: var(--text);
+  font-size: clamp(.98rem, .95rem + .2vw, 1.05rem);
+}
+.card_actions{
+  display: flex;
+  gap: 8px;
+}
+.icon_action{
+  width: 34px; height: 34px;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  display: grid; place-items: center;
+  background: #fff;
+  cursor: pointer;
+  transition: transform .05s ease, background-color .15s ease, box-shadow .15s ease;
+}
+.icon_action:hover{ background:#f1f5f9; box-shadow: 0 2px 8px rgba(0,0,0,.06); }
+.icon_action:active{ transform: translateY(1px); }
+.icon_action.danger:hover{ background:#fff1f2; border-color:#fecdd3; }
+
+.card_body{ display: grid; gap: 6px; }
+.chips_row{ display: flex; flex-wrap: wrap; gap: 6px; }
+.chip{
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: .85rem;
+  border: 1px solid var(--line);
+  color: #334155;
+  background:#f8fafc;
+}
+.chip.on{  background:#e6f9ef; border-color:#b6e7c9; color:#166534; }
+.chip.off{ background:#fff7ed; border-color:#fed7aa; color:#9a3412; }
+.chip.time{ background:#eef6ff; border-color:#c7ddff; color:#1e3a8a; }
+
+/* ===========================
+   Tema escuro (opcional)
+   =========================== */
 @media (prefers-color-scheme: dark){
   :root{
     --bg:#0b1220; --card:#0f172a; --line:#1f2a44; --text:#e5f0ff; --muted:#9db4d3;
     --shadow: 0 10px 25px rgba(0,0,0,.35);
   }
-  .icon_button{ background:#0f172a; }
-  .icon_button:hover{ background:#12213a; }
+  .icon_button_med{ background:#0f172a; }
+  .icon_button_med:hover{ background:#12213a; }
   .input_meds{ background:#0d1527; border-color:#1f2a44; }
+  .list_empty{ background:#0d1527; }
+  .card{ background:#0f172a; }
+  .chip{ background:#0d1527; }
+  .chip.time{ background:#13203a; border-color:#1f386d; color:#cfe1ff; }
+  .chip.on{ background:#0e2218; border-color:#1d3c2a; color:#b7f7cf; }
+  .chip.off{ background:#2a1a12; border-color:#6b3a1c; color:#ffd6b0; }
 }

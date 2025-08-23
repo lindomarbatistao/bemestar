@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import './styles.css'; // ou './medications.css'
 
 export default function Medications() {
-  const [calendarId, setCalendarId] = useState(null);
+  const [calendarId, setCalendarId] = useState(null); // usado apenas quando em modo edição
   const [nameMedic, setNameMedic] = useState('');
   const [time1, setTime1] = useState('');
   const [time2, setTime2] = useState('');
@@ -21,6 +21,8 @@ export default function Medications() {
     { day: 'Sex', selected: false },
     { day: 'Sáb', selected: false },
   ]);
+  const [meds, setMeds] = useState([]);        // lista de medicamentos
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const token = localStorage.getItem('token');
 
@@ -44,7 +46,7 @@ export default function Medications() {
   const handleTimeChange5 = (v) => setTime5(maskTime(v));
 
   const isValidTime = (text) => {
-    if (!text) return true;
+    if (!text) return true; // campos de hora são opcionais
     if (!/^\d{2}:\d{2}$/.test(text)) return false;
     const [hh, mm] = text.split(':');
     const h = parseInt(hh, 10), m = parseInt(mm, 10);
@@ -65,41 +67,30 @@ export default function Medications() {
       { day: 'Sex', selected: false },
       { day: 'Sáb', selected: false },
     ]);
-    setCalendarId(null);
+    setCalendarId(null); // sai do modo edição
   }, []);
 
-  useEffect(() => {
-    const fetchCalendario = async () => {
-      try {
-        if (!token) { resetAll(); return; }
-        const res = await axios.get('http://localhost:8000/api/calendario/', {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        if (Array.isArray(res.data) && res.data.length > 0) {
-          const c = res.data[0];
-          setCalendarId(c.id);
-          setNameMedic(c.nome || '');
-          setTime1(c.hora1 ? c.hora1.slice(0, 5) : '');
-          setTime2(c.hora2 ? c.hora2.slice(0, 5) : '');
-          setTime3(c.hora3 ? c.hora3.slice(0, 5) : '');
-          setTime4(c.hora4 ? c.hora4.slice(0, 5) : '');
-          setTime5(c.hora5 ? c.hora5.slice(0, 5) : '');
-          setDaysOfWeek([
-            { day: 'Dom', selected: !!c.dom },
-            { day: 'Seg', selected: !!c.seg },
-            { day: 'Ter', selected: !!c.ter },
-            { day: 'Qua', selected: !!c.qua },
-            { day: 'Qui', selected: !!c.qui },
-            { day: 'Sex', selected: !!c.sex },
-            { day: 'Sáb', selected: !!c.sab },
-          ]);
-        }
-      } catch {}
-    };
-    fetchCalendario();
-  }, [token, resetAll]);
+  const fetchList = useCallback(async () => {
+    if (!token) return;
+    try {
+      setLoading(true);
+      const res = await axios.get('http://localhost:8000/api/calendario/', {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setMeds(Array.isArray(res.data) ? res.data : []);
+    } catch {
+      setMeds([]);
+    } finally {
+      setLoading(false);
+    }
+  }, [token]);
 
-  const handleRegister = async () => {
+  useEffect(() => {
+    if (!token) { resetAll(); return; }
+    fetchList();
+  }, [token, resetAll, fetchList]);
+
+  const handleCreate = async () => {
     if (!token) { alert('Faça login para continuar.'); return; }
     if (![time1, time2, time3, time4, time5].every(isValidTime)) {
       alert('Hora inválida. Use o formato hh:mm.');
@@ -121,25 +112,86 @@ export default function Medications() {
         hora4: toApiTime(time4),
         hora5: toApiTime(time5),
       };
-      if (calendarId) {
-        await axios.put(`http://localhost:8000/api/calendario/${calendarId}/`, payload, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        alert('Dados atualizados com sucesso!');
-      } else {
-        const res = await axios.post('http://localhost:8000/api/calendario/', payload, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        setCalendarId(res.data?.id || null);
-        alert('Dados registrados com sucesso!');
-      }
+      await axios.post('http://localhost:8000/api/calendario/', payload, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      alert('Medicamento cadastrado com sucesso!');
+      resetAll();
+      fetchList();
     } catch {
-      alert('Falha ao registrar/atualizar. Verifique os dados ou o login.');
+      alert('Falha ao cadastrar. Verifique os dados ou o login.');
+    }
+  };
+
+  const startEdit = (item) => {
+    setCalendarId(item.id);
+    setNameMedic(item.nome || '');
+    setTime1(item.hora1 ? item.hora1.slice(0,5) : '');
+    setTime2(item.hora2 ? item.hora2.slice(0,5) : '');
+    setTime3(item.hora3 ? item.hora3.slice(0,5) : '');
+    setTime4(item.hora4 ? item.hora4.slice(0,5) : '');
+    setTime5(item.hora5 ? item.hora5.slice(0,5) : '');
+    setDaysOfWeek([
+      { day: 'Dom', selected: !!item.dom },
+      { day: 'Seg', selected: !!item.seg },
+      { day: 'Ter', selected: !!item.ter },
+      { day: 'Qua', selected: !!item.qua },
+      { day: 'Qui', selected: !!item.qui },
+      { day: 'Sex', selected: !!item.sex },
+      { day: 'Sáb', selected: !!item.sab },
+    ]);
+  };
+
+  const handleSaveEdit = async () => {
+    if (!token || !calendarId) return;
+    if (![time1, time2, time3, time4, time5].every(isValidTime)) {
+      alert('Hora inválida. Use o formato hh:mm.');
+      return;
+    }
+    try {
+      const payload = {
+        nome: nameMedic,
+        dom: daysOfWeek[0].selected,
+        seg: daysOfWeek[1].selected,
+        ter: daysOfWeek[2].selected,
+        qua: daysOfWeek[3].selected,
+        qui: daysOfWeek[4].selected,
+        sex: daysOfWeek[5].selected,
+        sab: daysOfWeek[6].selected,
+        hora1: toApiTime(time1),
+        hora2: toApiTime(time2),
+        hora3: toApiTime(time3),
+        hora4: toApiTime(time4),
+        hora5: toApiTime(time5),
+      };
+      await axios.put(`http://localhost:8000/api/calendario/${calendarId}/`, payload, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      alert('Medicamento atualizado!');
+      resetAll();
+      fetchList();
+    } catch {
+      alert('Falha ao atualizar. Verifique os dados ou o login.');
+    }
+  };
+
+  const handleDelete = async (id) => {
+    if (!token) return;
+    if (!confirm('Excluir este medicamento?')) return;
+    try {
+      await axios.delete(`http://localhost:8000/api/calendario/${id}/`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      fetchList();
+    } catch {
+      alert('Falha ao excluir. Tente novamente.');
     }
   };
 
   const handleBack = () => navigate('/home');
   const handleLogout = () => { localStorage.removeItem('token'); resetAll(); navigate('/initial'); };
+
+  const dayShorts = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
 
   return (
     <div className="meds_wrapper">
@@ -161,6 +213,7 @@ export default function Medications() {
           </button>
         </header>
 
+        {/* Formulário */}
         <div className="meds_form">
           <input
             type="text"
@@ -196,11 +249,73 @@ export default function Medications() {
             <input type="text" className="input_meds" placeholder="5º Remédio (ex: 22:30)" value={time5} onChange={(e) => handleTimeChange5(e.target.value)} maxLength={5} inputMode="numeric" />
           </div>
 
-          <button className="button_meds" onClick={handleRegister}>
-            {calendarId ? 'Atualizar' : 'Registrar'}
-          </button>
+          {/* Botões principais: Cadastrar vs Salvar alterações */}
+          {calendarId ? (
+            <div className="actions_row">
+              <button className="button_meds" onClick={handleSaveEdit}>Salvar alterações</button>
+              <button className="button_secondary" onClick={resetAll} type="button">Cancelar</button>
+            </div>
+          ) : (
+            <button className="button_meds" onClick={handleCreate}>Cadastrar</button>
+          )}
+
           <p className="meds_footer">Gerencie seus horários com facilidade</p>
         </div>
+
+        {/* Lista de medicamentos */}
+        <section className="meds_list">
+          <h2 className="list_title">Meus medicamentos</h2>
+          {loading ? (
+            <div className="list_empty">Carregando...</div>
+          ) : meds.length === 0 ? (
+            <div className="list_empty">Nenhum medicamento cadastrado.</div>
+          ) : (
+            <ul className="cards">
+              {meds.map((m) => (
+                <li key={m.id} className="card">
+                  <div className="card_head">
+                    <span className="med_name">{m.nome || 'Sem nome'}</span>
+                    <div className="card_actions">
+                      <button className="icon_action" title="Editar" onClick={() => startEdit(m)} aria-label="Editar">
+                        {/* lápis */}
+                        <svg width="18" height="18" viewBox="0 0 24 24">
+                          <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1 1 0 0 0 0-1.41L18.37 3.29a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" fill="currentColor"/>
+                        </svg>
+                      </button>
+                      <button className="icon_action danger" title="Excluir" onClick={() => handleDelete(m.id)} aria-label="Excluir">
+                        {/* lixeira */}
+                        <svg width="18" height="18" viewBox="0 0 24 24">
+                          <path d="M6 7h12m-9-2h6m-7 4v9m4-9v9m4-9v9M7 7l1 12a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2l1-12" stroke="currentColor" strokeWidth="1.6" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
+                        </svg>
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="card_body">
+                    <div className="chips_row">
+                      {dayShorts.map((d, i) => (
+                        <span key={d} className={`chip ${m[['dom','seg','ter','qua','qui','sex','sab'][i]] ? 'on' : ''}`}>
+                          {d}
+                        </span>
+                      ))}
+                    </div>
+                    <div className="chips_row">
+                      {[m.hora1, m.hora2, m.hora3, m.hora4, m.hora5]
+                        .filter(Boolean)
+                        .map((h, idx) => (
+                          <span key={idx} className="chip time">{h.slice(0,5)}</span>
+                        ))
+                      }
+                      {[m.hora1, m.hora2, m.hora3, m.hora4, m.hora5].every(h => !h) && (
+                        <span className="chip off">Sem horários</span>
+                      )}
+                    </div>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          )}
+        </section>
       </div>
     </div>
   );
