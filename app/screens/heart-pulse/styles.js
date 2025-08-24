@@ -26,8 +26,8 @@ export default StyleSheet.create({
     borderWidth: 1,
     borderColor: '#d0d7de',
     fontSize: 16,
-    elevation: 2, // sombra leve para Android
-    shadowColor: '#000', // sombra iOS
+    elevation: 2, 
+    shadowColor: '#000', 
     shadowOpacity: 0.05,
     shadowOffset: { width: 0, height: 1 },
     shadowRadius: 4,

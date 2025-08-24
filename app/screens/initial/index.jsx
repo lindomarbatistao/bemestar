@@ -4,8 +4,6 @@ import { MaterialCommunityIcons, FontAwesome5, Entypo } from '@expo/vector-icons
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Icon from 'react-native-vector-icons/Feather';
 import styles from './styles';
-import HeartPulse from '../heart-pulse';
-
 
 
 export default function Initial({ navigation }) {

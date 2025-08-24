@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import styles from './styles';
 import Icon from 'react-native-vector-icons/Feather';
+import { BASE_URL } from "../../config/api";
+import styles from './styles';
 import axios from 'axios';
 
 
@@ -91,7 +92,7 @@ export default function Bloodglic({ navigation }) {
 
     console.log('Payload enviado:', payload); 
 
-    await axios.post('http://192.168.1.66:8000/api/glicemia/', payload, {
+    await axios.post(`${BASE_URL}/api/glicemia/`, payload, {
       headers: {
         Authorization: `Bearer ${token}`,
       },

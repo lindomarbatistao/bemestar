@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import axios from 'axios';
+import { BASE_URL } from "../../config/api";
 import styles from './styles';
+import axios from 'axios';
 
 export default function SignUp({ navigation }) {
   const [username, setUsername] = useState('');
@@ -13,7 +14,7 @@ export default function SignUp({ navigation }) {
   const handleSignUp = () => {
     console.log(username, password, email);
         
-    axios.post('http://192.168.1.66:8000/api/signup/', {
+    axios.post(`${BASE_URL}/api/signup/`, {
       username: username,
       password: password,
       email: email

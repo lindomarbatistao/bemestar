@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { BASE_URL } from "../../config/api";
 import styles from './styles';
 import Icon from 'react-native-vector-icons/Feather';
 import axios from 'axios';
@@ -87,7 +88,7 @@ export default function HeartPulse({ navigation }) {
       };
 
 
-      await axios.post('http://192.168.1.66:8000/api/pressao/', payload, {
+      await axios.post(`${BASE_URL}/api/pressao/`, payload, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

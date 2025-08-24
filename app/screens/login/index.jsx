@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import axios from 'axios';
+import { BASE_URL } from "../../config/api";
 import styles from './styles';
+import axios from 'axios';
+
 
 export default function Login({ navigation }) {
   const [username, setUsername] = useState('');
@@ -11,7 +13,7 @@ export default function Login({ navigation }) {
 
   const handleLogin = async () => {
     try {
-      const response = await axios.post('http://192.168.1.66:8000/api/token/', {
+      const response = await axios.post(`${BASE_URL}/api/token/`, {
         username: username,
         password: password,
       });

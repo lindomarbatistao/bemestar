@@ -1,10 +1,9 @@
 import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
-  /* Layout base */
   container: {
     flex: 1,
-    backgroundColor: '#f3f6fb',
+    backgroundColor: '#fbf6f3ff',
     paddingHorizontal: 16,
     paddingTop: 24,
   },
@@ -13,10 +12,10 @@ export default StyleSheet.create({
     fontWeight: '800',
     color: '#0b72b9',
     alignSelf: 'center',
+    marginTop: 20,
     marginBottom: 12,
   },
 
-  /* Form */
   inputName: {
     width: '100%',
     paddingVertical: 12,
@@ -49,7 +48,6 @@ export default StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     gap: 8,
-    // backgroundColor: 'red',
     alignItems:'center',
     justifyContent:'center'
   },
@@ -99,7 +97,6 @@ export default StyleSheet.create({
     shadowRadius: 4,
   },
 
-  /* Botões principais */
   buttonPrimary: {
     backgroundColor: '#0b72b9',
     paddingVertical: 14,
@@ -134,15 +131,14 @@ export default StyleSheet.create({
     fontSize: 16,
     fontWeight: '700',
   },
-
+  
   helperText: {
     marginTop: 8,
     fontSize: 13,
     color: '#64748b',
     textAlign: 'center',
   },
-
-  /* Lista */
+  
   listHeader: {
     marginTop: 16,
     marginBottom: 6,
@@ -155,18 +151,18 @@ export default StyleSheet.create({
   emptyBox: {
     borderWidth: 1,
     borderStyle: 'dashed',
-    borderColor: '#dbe3ee',
+    borderColor: '#eee2dbff',
     borderRadius: 12,
     paddingVertical: 16,
     paddingHorizontal: 12,
     alignItems: 'center',
-    backgroundColor: '#f8fbff',
+    backgroundColor: '#fff8f9ff',
     marginTop: 6,
   },
   emptyText: {
     color: '#64748b',
   },
-
+  
   card: {
     borderWidth: 1,
     borderColor: '#dbe3ee',
@@ -240,13 +236,12 @@ export default StyleSheet.create({
   chipTextOff: { color: '#9a3412' },
   chipTextTime: { color: '#1e3a8a' },
 
-  /* Home */
   homeButton: {
     flexDirection: 'row',
     alignItems: 'center',
     alignSelf: 'center',
-    marginTop: 12,
     padding: 8,
+    marginBottom: 24,
   },
   homeText: {
     marginLeft: 8,

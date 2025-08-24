@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import styles from './styles';
 import Icon from 'react-native-vector-icons/Feather'; 
+import { BASE_URL } from "../../config/api";
+import styles from './styles';
+
 
 export default function Cholesterol({ navigation }) {
   const [date, setDate] = useState('');

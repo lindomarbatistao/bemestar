@@ -1,12 +1,11 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Alert, FlatList } from 'react-native';
-import Icon from 'react-native-vector-icons/Feather';
-import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
+import Icon from 'react-native-vector-icons/Feather';
+import { BASE_URL } from "../../config/api";
 import styles from './styles';
-
-const BASE_URL = 'http://192.168.1.66:8000'
+import axios from 'axios';
 
 export default function Medications({ navigation }) {
   const [editingId, setEditingId] = useState(null); 
@@ -246,7 +245,6 @@ export default function Medications({ navigation }) {
       </View>
 
       <Text style={styles.sectionLabel}>Horários</Text>
-      {/* inputs de horário menores, em grade flexível */}
       <View style={styles.timeGrid}>
         <TextInput
           style={styles.inputTime}
