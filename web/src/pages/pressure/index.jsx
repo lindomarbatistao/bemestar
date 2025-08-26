@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './styles.css';
+import {BASE_URL} from '../../../config/api'
 
 export default function PressureForm() {
   const [date, setDate] = useState('');
@@ -66,7 +67,7 @@ export default function PressureForm() {
         baixa: parseInt(diastolic, 10),
       };
 
-      await axios.post('http://localhost:8000/api/pressao/', payload, {
+      await axios.post(`${BASE_URL}/api/pressao/`, payload, {
         headers: { Authorization: `Bearer ${token}` },
       });
 

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './styles.css';
+import {BASE_URL} from '../../../config/api'
 
 export default function SignUp() {
     const [user, setUser] = useState('');
@@ -17,14 +18,14 @@ export default function SignUp() {
         
         try {
             // 1) Cadastra usuário
-            await axios.post('http://localhost:8000/api/signup/', {
+            await axios.post(`${BASE_URL}/api/signup/`, {
                 username: user,
                 email: email,
                 password: password,
             });
 
             // 2) Faz login automático para pegar token
-            const loginResponse = await axios.post('http://localhost:8000/api/token/', {
+            const loginResponse = await axios.post(`${BASE_URL}/api/token/`, {
                 username: user,
                 password,
             });

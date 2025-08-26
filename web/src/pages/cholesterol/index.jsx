@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './styles.css';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import {BASE_URL} from '../../../config/api'
 
 export default function Cholesterol() {
   const [date, setDate] = useState('');
@@ -54,7 +55,7 @@ export default function Cholesterol() {
       const horaApi = time.length === 5 ? `${time}:00` : time;
       const payload = { ldl: parseInt(ldl, 10), hdl: parseInt(hdl, 10), data: dataFormatada, hora: horaApi };
 
-      await axios.post('http://localhost:8000/api/colesterol/', payload, {
+      await axios.post(`${BASE_URL}/api/colesterol/`, payload, {
         headers: { Authorization: `Bearer ${token}` }
       });
 

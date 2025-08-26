@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import {BASE_URL} from '../../../config/api'
 import axios from 'axios';
 import './styles.css';
 
@@ -12,7 +13,7 @@ export default function Login() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('http://localhost:8000/api/token/', {
+            const response = await axios.post(`${BASE_URL}/api/token/`, {
                 username: user,
                 password,
             });

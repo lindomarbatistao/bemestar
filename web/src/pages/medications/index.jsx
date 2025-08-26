@@ -2,10 +2,11 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import './styles.css'; // ou './medications.css'
+import './styles.css'
+import {BASE_URL} from '../../../config/api'
 
 export default function Medications() {
-  const [calendarId, setCalendarId] = useState(null); // usado apenas quando em modo edição
+  const [calendarId, setCalendarId] = useState(null); 
   const [nameMedic, setNameMedic] = useState('');
   const [time1, setTime1] = useState('');
   const [time2, setTime2] = useState('');
@@ -21,7 +22,7 @@ export default function Medications() {
     { day: 'Sex', selected: false },
     { day: 'Sáb', selected: false },
   ]);
-  const [meds, setMeds] = useState([]);        // lista de medicamentos
+  const [meds, setMeds] = useState([]);        
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const token = localStorage.getItem('token');
@@ -67,14 +68,14 @@ export default function Medications() {
       { day: 'Sex', selected: false },
       { day: 'Sáb', selected: false },
     ]);
-    setCalendarId(null); // sai do modo edição
+    setCalendarId(null);
   }, []);
 
   const fetchList = useCallback(async () => {
     if (!token) return;
     try {
       setLoading(true);
-      const res = await axios.get('http://localhost:8000/api/calendario/', {
+      const res = await axios.get(`${BASE_URL}/api/calendario/`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setMeds(Array.isArray(res.data) ? res.data : []);
@@ -112,7 +113,7 @@ export default function Medications() {
         hora4: toApiTime(time4),
         hora5: toApiTime(time5),
       };
-      await axios.post('http://localhost:8000/api/calendario/', payload, {
+      await axios.post(`${BASE_URL}/api/calendario/`, payload, {
         headers: { Authorization: `Bearer ${token}` },
       });
       alert('Medicamento cadastrado com sucesso!');
@@ -164,7 +165,7 @@ export default function Medications() {
         hora4: toApiTime(time4),
         hora5: toApiTime(time5),
       };
-      await axios.put(`http://localhost:8000/api/calendario/${calendarId}/`, payload, {
+      await axios.put(`${BASE_URL}/api/calendario/${calendarId}/`, payload, {
         headers: { Authorization: `Bearer ${token}` },
       });
       alert('Medicamento atualizado!');
@@ -179,7 +180,7 @@ export default function Medications() {
     if (!token) return;
     if (!confirm('Excluir este medicamento?')) return;
     try {
-      await axios.delete(`http://localhost:8000/api/calendario/${id}/`, {
+      await axios.delete(`${BASE_URL}/api/calendario/${id}/`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       fetchList();

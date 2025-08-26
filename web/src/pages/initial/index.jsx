@@ -2,6 +2,7 @@ import React from 'react';
 import { FaHeartbeat, FaTint, FaVial, FaCalendarAlt, FaUser, FaUserPlus } from 'react-icons/fa';
 import './styles.css';
 import { Link } from 'react-router-dom';
+import {BASE_URL} from '../../../config/api'
 
 
 export default function Initial() {

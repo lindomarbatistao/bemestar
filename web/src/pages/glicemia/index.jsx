@@ -2,7 +2,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import './styles.css'; // ou './glicemia.css' se separar
+import './styles.css'
+import {BASE_URL} from '../../../config/api'
 
 export default function Glicemia() {
   const [date, setDate] = useState('');
@@ -56,7 +57,7 @@ export default function Glicemia() {
 
       const payload = { data: dataFormatada, hora: horaApi, glic: parseInt(glic, 10) };
 
-      await axios.post('http://localhost:8000/api/glicemia/', payload, {
+      await axios.post(`${BASE_URL}/api/glicemia/`, payload, {
         headers: { Authorization: `Bearer ${token}` },
       });
 

@@ -36,12 +36,12 @@ export default function Initial({ navigation }) {
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.iconBox} onPress={() => navigation.navigate('Cholesterol')}>
-          <FontAwesome5 name="vial" size={50} color="#0077b6" />
+          <FontAwesome5 name="vial" size={50} color="#b67600ff" />
           <Text style={styles.iconLabel}>Colesterol</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.iconBox} onPress={() => navigation.navigate('Medications')}>
-          <Entypo name="calendar" size={50} color="#0077b6" />
+          <Entypo name="calendar" size={50} color="#0be4f3ff" />
           <Text style={styles.iconLabel}>Medicamentos</Text>
         </TouchableOpacity>
       </View>
