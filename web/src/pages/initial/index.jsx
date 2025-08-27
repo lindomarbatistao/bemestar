@@ -2,8 +2,8 @@ import React from 'react';
 import { FaHeartbeat, FaTint, FaVial, FaCalendarAlt, FaUser, FaUserPlus } from 'react-icons/fa';
 import './styles.css';
 import { Link } from 'react-router-dom';
-import {BASE_URL} from '../../../config/api'
-
+import { BASE_URL } from '../../../config/api';
+import qrCodeImage from '../../assets/qrcode.png';  // <-- importa o QR Code
 
 export default function Initial() {
     return (
@@ -59,7 +59,15 @@ export default function Initial() {
                 </Link>
             </div>
 
-            <p className="footer">Gerencie e melhore sua qualidade de vida com conhecimento e acompanhamento.</p>
+            <p className="footer">
+                Gerencie e melhore sua qualidade de vida com conhecimento e acompanhamento.
+            </p>
+
+            {/* QR Code para baixar o app */}
+            <div className="qrcodeBox">
+                <p>Baixe o aplicativo escaneando o QR Code abaixo:</p>
+                <img src={qrCodeImage} alt="QR Code para baixar o app" className="qrcodeImage" />
+            </div>
         </div>
     );
 }

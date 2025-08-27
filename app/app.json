@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "front",
+    "name": "Monitor Saúde",
     "slug": "front",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -20,10 +20,16 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "package": "com.lintelecom.monnitor"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "6263bf5c-754e-45ac-9595-c72f44bb5acb"
+      }
     }
   }
 }
